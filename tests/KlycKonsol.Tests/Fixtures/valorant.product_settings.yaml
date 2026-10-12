@@ -1,0 +1,38 @@
+auto_patching_enabled_by_player: false
+dependencies:
+    DirectX:
+        hash: "e43a612015791b414addd705d88fae6c4c6e2df97783f9854b404ebf5948869b"
+        phase: "Succeeded"
+        version: "1.0.0"
+    vanguard: true
+locale_data:
+    available_locales:
+    - "en_US"
+    - "de_DE"
+    - "ar_AE"
+    - "es_ES"
+    - "es_MX"
+    - "fr_FR"
+    - "id_ID"
+    - "it_IT"
+    - "ja_JP"
+    - "ko_KR"
+    - "pl_PL"
+    - "pt_BR"
+    - "ru_RU"
+    - "th_TH"
+    - "tr_TR"
+    - "vi_VN"
+    - "zh_TW"
+    default_locale: "en_US"
+patching_policy: "manual"
+patchline_patching_ask_policy: "ask"
+product_install_full_path: "C:/Riot Games/VALORANT/live"
+product_install_root: "C:/Riot Games"
+settings:
+    create_shortcut: false
+    create_uninstall_key: true
+    locale: "tr_TR"
+    region: "TR"
+shortcut_name: "VALORANT.lnk"
+should_repair: false

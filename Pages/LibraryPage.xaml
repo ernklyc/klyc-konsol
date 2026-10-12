@@ -1,0 +1,129 @@
+<UserControl x:Class="KlycKonsol.Pages.LibraryPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="clr-namespace:KlycKonsol.Ui">
+    <UserControl.Resources>
+        <CubicEase x:Key="EaseOut" EasingMode="EaseOut"/>
+
+        <!-- 240x360 = tam 2:3 kapak oranı: hiçbir şey kesilmez -->
+        <DataTemplate x:Key="LibCard">
+            <Grid Width="200" Margin="14,12,14,0" RenderTransformOrigin="0.5,0.4">
+                <Grid.RenderTransform><ScaleTransform x:Name="Sc" ScaleX="1" ScaleY="1"/></Grid.RenderTransform>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="300"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border CornerRadius="18" Background="{Binding Accent}" RenderOptions.BitmapScalingMode="LowQuality">
+                    <Border.CacheMode><BitmapCache RenderAtScale="1.1" SnapsToDevicePixels="True"/></Border.CacheMode>
+                    <Grid>
+                        <TextBlock Text="{Binding Initial}" Visibility="{Binding InitialVisibility}" FontSize="110" FontWeight="Bold"
+                                   Foreground="#66FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Glyph}" Visibility="{Binding GlyphVisibility}" FontFamily="{StaticResource IconFont}" FontSize="90"
+                                   Foreground="#CCFFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border CornerRadius="18" Visibility="{Binding FillVisibility}">
+                            <Border.Background><ImageBrush ImageSource="{Binding CoverTiny}" Stretch="UniformToFill"/></Border.Background>
+                            <Border CornerRadius="18" Background="#66000000"/>
+                        </Border>
+                        <Border CornerRadius="18">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding Cover}" Stretch="{Binding CoverStretch}"/>
+                            </Border.Background>
+                        </Border>
+                        <Border Visibility="{Binding SupportVisibility}" Background="#CC0B0D11" CornerRadius="18" Width="40" Height="40" Margin="12" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <TextBlock Text="&#xE7FC;" FontFamily="{StaticResource IconFont}" FontSize="22" Foreground="{Binding SupportBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <Border Visibility="{Binding BadgeVisibility}" Background="#E6000000" CornerRadius="10" Margin="10" Padding="10,5" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                            <TextBlock Text="{Binding BadgeText}" FontSize="15" FontWeight="SemiBold" Foreground="White"/>
+                        </Border>
+                        <Border Visibility="{Binding FavoriteVisibility}" Background="#CC0B0D11" CornerRadius="18" Width="40" Height="40" Margin="12" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <TextBlock Text="&#xE735;" FontFamily="{StaticResource IconFont}" FontSize="20" Foreground="{StaticResource Warn}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </Border>
+                <Border x:Name="Ring" CornerRadius="18" BorderBrush="White" BorderThickness="5" Opacity="0"/>
+
+                <StackPanel Grid.Row="1" Margin="4,8,4,0">
+                    <TextBlock x:Name="Name" Text="{Binding Title}" FontSize="22" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" Opacity="0.7"/>
+                    <TextBlock Text="{Binding Subtitle}" FontSize="16" Foreground="{StaticResource TextDim}" Margin="0,2,0,0" Visibility="{Binding SubtitleVisibility}"/>
+                </StackPanel>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard><Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="Sc" Storyboard.TargetProperty="ScaleX" To="1.05" Duration="0:0:0.12" EasingFunction="{StaticResource EaseOut}"/>
+                            <DoubleAnimation Storyboard.TargetName="Sc" Storyboard.TargetProperty="ScaleY" To="1.05" Duration="0:0:0.12" EasingFunction="{StaticResource EaseOut}"/>
+                            <DoubleAnimation Storyboard.TargetName="Ring" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.08"/>
+                            <DoubleAnimation Storyboard.TargetName="Name" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.08"/>
+                        </Storyboard></BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <BeginStoryboard><Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="Sc" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.1"/>
+                            <DoubleAnimation Storyboard.TargetName="Sc" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.1"/>
+                            <DoubleAnimation Storyboard.TargetName="Ring" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.08"/>
+                            <DoubleAnimation Storyboard.TargetName="Name" Storyboard.TargetProperty="Opacity" To="0.7" Duration="0:0:0.08"/>
+                        </Storyboard></BeginStoryboard>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="90,0,90,6">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="Kütüphane" FontSize="52" FontWeight="Bold"/>
+                <TextBlock x:Name="StatusText" FontSize="20" Foreground="{StaticResource TextDim}" Margin="2,2,0,0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Border x:Name="ChipBar" Style="{StaticResource Glass}" CornerRadius="40" Padding="7" Background="#66000000" Margin="0,0,20,0">
+                    <StackPanel x:Name="Chips" Orientation="Horizontal"/>
+                </Border>
+                <Border x:Name="SearchPill" Style="{StaticResource Glass}" CornerRadius="40" Padding="22,0" Height="68" Width="236" Background="#66000000" Cursor="Hand">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE721;" FontFamily="{StaticResource IconFont}" FontSize="26" Foreground="{StaticResource TextDim}" VerticalAlignment="Center" Margin="0,0,14,0"/>
+                        <TextBlock x:Name="SearchText" Text="Ara" FontSize="26" Foreground="{StaticResource TextDim}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" MaxWidth="240"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <!-- Canvas: çocuğu kendi yerleşim alanından büyük olsa da kırpmaz (kaydırılan uzun liste için şart) -->
+        <Canvas x:Name="Viewport" Grid.Row="1" ClipToBounds="True" Margin="76,0,0,0">
+            <ItemsControl x:Name="CardList" ItemTemplate="{StaticResource LibCard}" Width="1596" Canvas.Left="0" Canvas.Top="0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate><WrapPanel ItemWidth="228" ItemHeight="380"/></ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.RenderTransform><TranslateTransform/></ItemsControl.RenderTransform>
+            </ItemsControl>
+        </Canvas>
+
+        <StackPanel x:Name="EmptyBox" Grid.Row="1" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="1200">
+            <TextBlock x:Name="EmptyTitle" FontSize="44" FontWeight="SemiBold" HorizontalAlignment="Center" TextAlignment="Center"/>
+            <TextBlock x:Name="EmptyHint" FontSize="26" Foreground="{StaticResource TextDim}" Margin="0,14,0,0" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <ui:OnScreenKeyboard x:Name="Osk" Grid.Row="1" VerticalAlignment="Bottom"/>
+
+        <!-- Oyun detay sayfası -->
+        <Grid x:Name="DetailLayer" Grid.RowSpan="2" Visibility="Collapsed" Background="#B3000000"/>
+
+        <!-- Bağlam menüsü (Start) -->
+        <Grid x:Name="MenuLayer" Grid.RowSpan="2" Visibility="Collapsed" Background="#99000000">
+            <Border Style="{StaticResource Glass}" Background="#F2141824" CornerRadius="28" Padding="14" Width="760" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock x:Name="MenuTitle" FontSize="30" FontWeight="Bold" Margin="18,10,18,12" TextTrimming="CharacterEllipsis"/>
+                    <StackPanel x:Name="MenuItems"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

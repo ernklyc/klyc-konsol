@@ -1,0 +1,468 @@
+# Türkçe<TAB>İngilizce. Anahtar, koddaki Türkçe metindir; {0} {1}... yer tutucular. Satır sonu için \n. İki parçalı metinler (" · " ile) parça parça çevrilir.
+Eşleşti	Paired
+Zaten eşleşmiş	Already paired
+Eşleşme başarısız (cihaz eşleşme modunda mı?)	Pairing failed (is the device in pairing mode?)
+Kimlik doğrulama başarısız (PIN yanlış olabilir)	Authentication failed (the PIN may be wrong)
+Cihaz zamanında yanıt vermedi	The device did not respond in time
+Cihaz eşleşmeye izin vermedi	The device did not allow pairing
+Cihaz bağlantıyı reddetti	The device refused the connection
+Cihazın bağlantı sınırı dolu	The device has reached its connection limit
+Eşleşme reddedildi	Pairing was rejected
+Başka bir eşleştirme sürüyor	Another pairing is in progress
+Bu cihaz özel bir eşleştirme yöntemi istiyor — Windows ayarlarını kullan	This device needs a special pairing method — use Windows settings
+Eşleşme iptal edildi	Pairing was cancelled
+Erişim reddedildi	Access denied
+Eşleşme tamamlanamadı ({0})	Pairing could not be completed ({0})
+Eşleştirilemedi: 	Could not pair:
+Eşleme kaldırıldı	Unpaired
+Kaldırılamadı ({0})	Could not remove ({0})
+Kaldırılamadı: 	Could not remove:
+Günlük	Daily
+Boşta	Idle
+Oyun	Game
+Sessiz	Quiet
+Uçuş kolu	Flight stick
+Boş	Empty
+Düşük	Low
+Dosyalar	Files
+Windows Ayarları	Windows Settings
+Ayarlar	Settings
+Kısayol	Shortcut
+Sürüm: {0}	Version: {0}
+Dil/bölge: {0}	Language/region: {0}
+Bağlı kol sayısı: {0}	Connected controllers: {0}
+Henüz yayınlanmış sürüm yok	No release has been published yet
+Sunucu yanıtı: {0}	Server response: {0}
+Bağlantı kurulamadı	Could not connect
+Yeni sürüm var: {0} — Ayarlar → Hakkında	New version available: {0} — Settings → About
+{0} kapandı	{0} closed
+KLYC Konsol kapatılsın mı?	Quit KLYC Konsol?
+Kol bağlantısı koptu — klavye (ok tuşları, Enter, Esc) ve fare çalışır; Ctrl+Alt+K aç/gizle	Controller disconnected — keyboard (arrow keys, Enter, Esc) and mouse still work; Ctrl+Alt+K shows/hides
+yüklü değil	not installed
+Xbox (orta) tuşu Windows Game Bar'ını da açıyor. Konsol'u bu tuşla açıp kapatabilmek için Game Bar'ı kapatalım mı?	The Xbox (center) button also opens the Windows Game Bar. Turn the Game Bar off so this button can open and close Konsol?
+Xbox tuşu artık yalnızca Konsol'u açıp kapatır	The Xbox button now only opens and closes Konsol
+Ayar değiştirilemedi	The setting could not be changed
+Kütüphane: gezinti	Library: navigation
+Sekme geçişi	Switch tabs
+Favorilere eklendi: {0}	Added to favorites: {0}
+Favorilerden çıkarıldı: {0}	Removed from favorites: {0}
+A  Evet        B  Vazgeç	A  Yes        B  Cancel
+{0}: indirme Steam'de başlatıldı	{0}: download started in Steam
+Steam açılamadı	Could not open Steam
+Bu teklifin mağaza sayfası bulunamadı	The store page for this offer was not found
+Başlatılıyor…	Launching…
+Başlatılamadı	Could not launch
+İNDİR	INSTALL
+ÜCRETSİZ	FREE
+YAKINDA	SOON
+Tam kol desteği	Full controller support
+Kısmi kol desteği	Partial controller support
+Kol desteği yok	No controller support
+Kol desteği kontrol ediliyor…	Checking controller support…
+{0} · {1} başlar	{0} · starts {1}
+Ara ya da adres yaz	Search or type an address
+Sekmeler	Tabs
+Yaz	Type
+Tarayıcı hazırlanıyor…	Preparing the browser…
+Sil	Delete
+Büyük harf	Caps
+Tamam	OK
+Kapat	Close
+Seç	Select
+Aç	Open
+Kapat / sil	Close / delete
+Ayarla	Adjust
+Geri	Back
+Gez	Navigate
+Sayfaya dön	Back to page
+Sekme	Tab
+Tıkla	Click
+Sayfaya yaz	Type into page
+Adres / ara	Address / search
+Araç çubuğu	Toolbar
+Tarayıcı başlatılamadı (WebView2 Runtime gerekli):\n	Could not start the browser (WebView2 Runtime required):\n
+Sekme açılamadı:\n	Could not open the tab:\n
+En fazla {0} sekme açılabilir	At most {0} tabs can be open
+Sayfaya yaz (önce yazı kutusuna tıkla)	Type into the page (click the text box first)
+Tarayıcı	Browser
+SEKMELER ({0}/{1})	TABS ({0}/{1})
+Başlangıç sayfası	Start page
+＋  Yeni sekme	＋  New tab
+YER İMLERİ	BOOKMARKS
+★  Bu sayfa yer imlerinde — kaldır	★  This page is bookmarked — remove
+☆  Bu sayfayı yer imlerine ekle	☆  Bookmark this page
+Henüz yer imi yok	No bookmarks yet
+AYARLAR	SETTINGS
+Yakınlaştırma	Zoom
+Tarama verilerini temizle (geçmiş, çerez, önbellek)	Clear browsing data (history, cookies, cache)
+Önce bir sekme açık olmalı	A tab must be open first
+Tarama verileri temizlendi	Browsing data cleared
+Temizlenemedi	Could not clear
+Kütüphane	Library
+Ara	Search
+Yüklü değil	Not installed
+Ücretsiz	Free
+{0} oyun gizli (kol desteği yok) · Back: tümünü göster	{0} games hidden (no controller support) · Back: show all
+kol desteği kontrol ediliyor ({0})…	checking controller support ({0})…
+Eşleşen sonuç yok	No matching results
+Aramayı değiştirmek için Y'ye bas.	Press Y to change the search.
+Henüz favori yok	No favorites yet
+Bir oyunun üzerindeyken X'e basarak favoriye ekle.	Press X while on a game to add it to favorites.
+Uygulama yok	No apps
+Ayarlar → Oyun / uygulama ekle.	Settings → Add game / app.
+Yüklü olmayan oyun yok	No uninstalled games
+Steam'de oynadığın ama şu an kurulu olmayan, kol destekli oyunlar burada çıkar (ilk açılışta mağazadan öğrenilir, internet gerekir).	Controller-supported games you played on Steam but that are not installed show up here (learned from the store on first run, internet required).
+Şu an ücretsiz oyun yok	No free games right now
+Epic'in haftalık ücretsiz oyunları burada listelenir (internet gerekir).	Epic's weekly free games are listed here (internet required).
+Oyunların controller desteği Steam mağazasından öğreniliyor (internet gerekir). Birkaç saniye içinde listelenir.	Controller support is being learned from the Steam store (internet required). The list appears in a few seconds.
+Kol destekli oyun bulunamadı	No controller-supported games found
+{0} oyun kol desteği olmadığı için gizlendi. Back tuşuyla filtreyi kapatabilirsin.	{0} games were hidden because they have no controller support. Press Back to turn the filter off.
+Satır	Row
+Seç / değiştir	Select / change
+Onayla	Confirm
+Favori	Favorite
+Oyunlara in	Go to games
+Başlat	Launch
+Menü	Menu
+Kütüphanede ara	Search the library
+Sadece kol destekli oyunlar gösteriliyor	Showing only controller-supported games
+Tüm oyunlar gösteriliyor	Showing all games
+Yükle (Steam)	Install (Steam)
+Mağazada aç	Open in store
+Ayrıntılar	Details
+Favorilerden çıkar	Remove from favorites
+Favorilere ekle	Add to favorites
+Kol desteği YOK olarak işaretle	Mark as NO controller support
+Kol destekli olarak işaretle	Mark as controller-supported
+Kütüphaneden gizle	Hide from library
+Gizlendi: {0} (Ayarlar'dan geri getirilir)	Hidden: {0} (restore from Settings)
+{0}: kol desteği yok olarak işaretlendi	{0}: marked as no controller support
+{0}: kol destekli olarak işaretlendi	{0}: marked as controller-supported
+Ses	Volume
+◀ ▶ ile ayarla · A: sessize al	Adjust with ◀ ▶ · A: mute
+Parlaklık	Brightness
+◀ ▶ ile ayarla (dahili ekran)	Adjust with ◀ ▶ (built-in display)
+Medya	Media
+◀ önceki · A oynat/duraklat · ▶ sonraki (arka planda çalan müzik/video)	◀ previous · A play/pause · ▶ next (music/video playing in the background)
+Oyun sırasında Konsol'u kapat	Close Konsol during a game
+Oyun başlayınca Konsol tamamen kapanır, yerine ~1 MB'lık küçük bekçi kalır (Guide / Ctrl+Alt+K ile geri açılır) — önerilir	When a game starts Konsol closes completely, leaving a tiny ~1 MB guard (reopen with Guide / Ctrl+Alt+K) — recommended
+Bekçi (KlycGuard.exe) bulunamadı — Konsol arka planda düşük güçte kalır	Guard (KlycGuard.exe) not found — Konsol stays in the background at low power
+Arayüz sesleri	Interface sounds
+Gezinirken ve seçerken kısa sesler (oyun sırasında kapalıdır)	Short sounds when navigating and selecting (off during games)
+Titreşim geri bildirimi	Vibration feedback
+A / B tuşlarında kolda hafif bir titreşim (kablosuz kolda pili biraz harcar)	A light vibration on the A / B buttons (uses a bit of battery on wireless pads)
+Windows ile başlat	Start with Windows
+Bilgisayar açılınca doğrudan Konsol açılsın	Open Konsol directly when the computer starts
+Açılışta kol yoksa gizli bekle	Wait hidden at startup if no controller
+Windows ile başlarken kol takılı değilse Konsol ekranı örtmez (fare/klavyeyle kullanırsın); kolu takıp Guide'a basınca açılır. Kapalıysa her açılışta ekranı kaplar	If no controller is connected when Windows starts, Konsol does not cover the screen (use mouse/keyboard); plug in a controller and press Guide to open it. When off, it covers the screen on every start
+Xbox tuşu Game Bar'ı açsın	Let the Xbox button open the Game Bar
+Kapalı olursa orta (Guide) tuşu sadece Konsol'u açıp kapatır — önerilir	When off, the center (Guide) button only opens and closes Konsol — recommended
+Sadece kol destekli oyunlar	Only controller-supported games
+Kütüphane'de yalnızca controller ile oynanabilen oyunlar görünsün (Steam verisi)	Show only games playable with a controller in the library (Steam data)
+Kısmi kol desteğini de göster	Also show partial controller support
+Bazı menülerde klavye/fare gerektiren ama oynanabilen oyunlar	Games that need keyboard/mouse in some menus but are playable
+Oyun başlarken güç planı	Power plan when a game starts
+Prizdeyken Yüksek/Nihai performansa geçer, oyun bitince eskisine döner (oyuna özel kapatılabilir). KLYC Pulse çalışıyorsa güç planını Pulse yönetir, Konsol dokunmaz	Switches to High/Ultimate performance when plugged in and returns afterwards (can be turned off per game). If KLYC Pulse is running, Pulse manages the power plan and Konsol leaves it alone
+Oyun sırasında bildirimleri sustur	Mute notifications during games
+Windows bildirimleri oyun boyunca kapanır, oyun bitince geri açılır	Windows notifications are off during the game and back on afterwards
+Oyun kapanınca Konsol'a dön	Return to Konsol when the game closes
+Oyunu kapatınca Konsol kendiliğinden öne gelir (oyun sırasında ek yük yok)	When you close the game Konsol comes to the front by itself (no extra load during the game)
+Gizlenen oyunlar	Hidden games
+Kütüphane menüsünden (Start) gizlediklerin; A ile hepsini geri getir	The ones you hid from the library menu (Start); bring them all back with A
+Gizlenen oyunlar geri getirildi	Hidden games restored
+Oyun kısayol klasörü	Game shortcut folder
+Masaüstü'ndeki Game gibi klasörlerdeki .url / .lnk kısayolları otomatik eklenir; A ile klasörü aç	.url / .lnk shortcuts in folders like Game on the Desktop are added automatically; open the folder with A
+SİSTEM	SYSTEM
+Controller'lar	Controllers
+Bağlı kollar (Xbox 360 dahil), pil, titreşim testi, çubuk kayması kalibrasyonu	Connected controllers (including Xbox 360), battery, vibration test, stick drift calibration
+Masaüstü Modu	Desktop Mode
+Controller fare ve klavye olur (Guide: Konsol'a dön)	The controller becomes mouse and keyboard (Guide: back to Konsol)
+Ağları listele, bağlan, şifre gir (ekran klavyesiyle)	List networks, connect, enter a password (on-screen keyboard)
+Cihaz ara, eşleştir (kol, kulaklık, hoparlör), eşlemeyi kaldır	Search for devices, pair (controller, headset, speaker), unpair
+KÜTÜPHANE	LIBRARY
+Kütüphaneyi yenile	Refresh the library
+Steam / Epic oyunlarını yeniden tara	Rescan Steam / Epic games
+Kütüphane yenileniyor…	Refreshing the library…
+Oyun / uygulama ekle	Add game / app
+library.json dosyasını Not Defteri ile aç	Open library.json in Notepad
+GÜÇ	POWER
+Uyku	Sleep
+Bilgisayarı uyut	Put the computer to sleep
+Yeniden Başlat	Restart
+Bilgisayarı yeniden başlat	Restart the computer
+Bilgisayar yeniden başlatılsın mı?	Restart the computer?
+Bilgisayarı kapat	Shut down the computer
+Bilgisayar kapatılsın mı?	Shut down the computer?
+Hakkında	About
+Sürüm 	Version
+ · destek, bağlantılar, güncelleme, kol olmadan kullanım	 · support, links, updates, using without a controller
+Konsol'dan çık	Quit Konsol
+KLYC Konsol'u kapat	Close KLYC Konsol
+Eşleştir / aç	Pair / open
+Eşlemeyi kaldır	Unpair
+Yeniden tara	Rescan
+Bağlan	Connect
+Vazgeç	Cancel
+Ağ seç	Select network
+Bağlantıyı kes	Disconnect
+Yenile	Refresh
+Unut	Forget
+Kol seç	Select controller
+Titret	Vibrate
+Kalibre et	Calibrate
+Sıfırla	Reset
+Sekme değiştir	Switch tab
+Açık	On
+Kapalı	Off
+Desteklenmiyor	Not supported
+Bu ekran Windows'tan ayarlanamıyor (harici monitörde ekranın kendi tuşlarını kullan)	This display cannot be adjusted from Windows (use the monitor's own buttons for an external display)
+{0} klasör	{0} folders
+Bulunamadı	Not found
+Xbox tuşu Game Bar'ı açacak	The Xbox button will open the Game Bar
+Xbox tuşu artık Game Bar'ı açmayacak	The Xbox button will no longer open the Game Bar
+Masaüstünde 'Game' klasörü bulunamadı	No 'Game' folder found on the Desktop
+Steam Mağaza	Steam Store
+Denetlenmedi	Not checked
+Sürüm {0} · MIT lisansı	Version {0} · MIT license
+Controller ile PC'yi konsol gibi kullan — oyunlar, tarayıcı, ayarlar tek yerde.	Use your PC like a console with a controller — games, browser and settings in one place.
+Denetleniyor…	Checking…
+Yeni sürüm: {0}	New version: {0}
+Güncelsin	You're up to date
+Denetlenemedi	Could not check
+Sorun paketi masaüstüne yazıldı: 	The problem report was written to the desktop:
+Hazırlanıyor…	Preparing…
+İndiriliyor %{0}	Downloading {0}%
+Kurulamadı (sürüm sayfasından indirebilirsin)	Could not install (you can download from the release page)
+DESTEK	SUPPORT
+☕  Bir kahve ısmarla	☕  Buy me a coffee
+PROJE	PROJECT
+GitHub — KLYC Konsol	GitHub — KLYC Konsol
+KLYC Pulse — kardeş proje (performans, ısı, bakım)	KLYC Pulse — sister project (performance, heat, maintenance)
+⬇  Yeni sürüm var: {0} — indir ve kur	⬇  New version available: {0} — download and install
+⬇  Yeni sürüm var: {0} — sürüm sayfasını aç	⬇  New version available: {0} — open the release page
+Güncellemeleri denetle	Check for updates
+Her gün yeni sürümü kendiliğinden sor	Check for a new version every day
+Sorun bildir — günlük paketini masaüstüne hazırla	Report a problem — prepare a log package on the desktop
+kişisel veri içermez, kendiliğinden gönderilmez	contains no personal data, nothing is sent automatically
+GitHub'da sorun aç	Open an issue on GitHub
+Veri klasörünü aç (ayarlar, kapaklar, kayıtlar)	Open the data folder (settings, covers, records)
+KOL OLMADAN KULLANIM	USING WITHOUT A CONTROLLER
+Konsol'u aç / gizle (oyun içindeyken de çalışır)	Show / hide Konsol (also works inside a game)
+Ok tuşları · Enter · Esc · Tab	Arrow keys · Enter · Esc · Tab
+gezin · seç · geri · menü	navigate · select · back · menu
+Fare	Mouse
+tıkla · çift tıkla başlat · tekerlek kaydır · sağ üstte — ve ⏻	click · double-click to launch · wheel scrolls · top right — and ⏻
+Alt + F4  ya da  bildirim alanı simgesi → Konsol'dan çık	Alt + F4  or  the tray icon → Quit Konsol
+kapat	quit
+Taranıyor…	Scanning…
+Bu bilgisayarda Bluetooth bağdaştırıcısı bulunamadı.	No Bluetooth adapter found on this computer.
+Bluetooth kapalı.	Bluetooth is off.
+Cihaz bulunamadı — cihazı eşleşme moduna al ve Y ile yeniden tara.	No devices found — put the device in pairing mode and rescan with Y.
+Taranamadı: 	Could not scan:
+İşlem başarısız: 	Operation failed:
+Kapatılıyor…	Turning off…
+Açılıyor…	Turning on…
+Bluetooth açıldı	Bluetooth turned on
+Bluetooth kapatıldı	Bluetooth turned off
+EŞLEŞMİŞ CİHAZLAR  (X: eşlemeyi kaldır)	PAIRED DEVICES  (X: unpair)
+Bağlı	Connected
+Eşleşmiş · kapalı / menzil dışı	Paired · off / out of range
+{0} bağlı	{0} connected
+{0}: cihazı aç, Windows kendiliğinden bağlar	{0}: turn the device on, Windows connects it automatically
+{0} eşlemesi kaldırılıyor…	Unpairing {0}…
+YAKINDAKİ CİHAZLAR  (A: eşleştir)	NEARBY DEVICES  (A: pair)
+eşleşmeye hazır	ready to pair
+{0} ile eşleşiliyor…	Pairing with {0}…
+{0} PIN: {1} — cihazda bu PIN'i gir	{0} PIN: {1} — enter this PIN on the device
+Yeniden tara  (Y)	Rescan  (Y)
+Xbox (XInput) kollar ile PlayStation (DualShock 4 / DualSense) ve Switch Pro kolları aynı anda kullanılabilir.	Xbox (XInput) controllers and PlayStation (DualShock 4 / DualSense) and Switch Pro controllers can be used at the same time.
+CANLI TEST	LIVE TEST
+Kalibrasyon sürüyor — çubuklara dokunma…	Calibrating — do not touch the sticks…
+▲▼ Kol seç   A Titret   X Kalibre et   Y Sıfırla   B Kapat	▲▼ Select pad   A Vibrate   X Calibrate   Y Reset   B Close
+Bir tuşa bas…	Press a button…
+Controller {0}  ·  bağlı değil	Controller {0}  ·  not connected
+Bu yuva boş.	This slot is empty.
+Controller {0}: ölü bölge varsayılana (%{1}) döndü.	Controller {0}: dead zone reset to default ({1}%).
+Controller {0} kalibre ediliyor: çubuklara DOKUNMA (1,5 sn)…	Calibrating controller {0}: do NOT touch the sticks (1.5 s)…
+Controller {0}: ölü bölge %{1} olarak ayarlandı (çubuk kayması telafi edildi).	Controller {0}: dead zone set to {1}% (stick drift compensated).
+Masaüstü Modu  ·  Sol çubuk: imleç  ·  Sağ çubuk: kaydır  ·  A/B: tık  ·  Y: klavye  ·  Guide veya Start+Back: Konsol'a dön	Desktop Mode  ·  Left stick: cursor  ·  Right stick: scroll  ·  A/B: click  ·  Y: keyboard  ·  Guide or Start+Back: back to Konsol
+Bilgiler yükleniyor…	Loading information…
+Uygulama	App
+Yakında ücretsiz	Free soon
+Şu an ücretsiz	Free now
+Henüz oynanmadı	Not played yet
+az önce	just now
+{0} dk önce	{0} min ago
+{0} sa önce	{0} h ago
+dün	yesterday
+{0} gün önce	{0} days ago
+{0} ay önce	{0} months ago
+Yükle	Install
+Güç planı	Power plan
+Değiştirme	Do not change
+Otomatik (Pulse yönetiyor)	Automatic (managed by Pulse)
+Otomatik (Yüksek performans)	Automatic (High performance)
+Kol desteği	Controller support
+▲▼ Satır   ◀▶ Seç / değiştir   A Onayla   X Favori   B Kapat	▲▼ Row   ◀▶ Select / change   A Confirm   X Favorite   B Close
+Aranıyor	Searching
+Arka plana indir (oyun modu) — Ctrl+Alt+K	Send to background (game mode) — Ctrl+Alt+K
+Controller yok	No controller
+Controller bağlı	Controller connected
+Boşluk	Space
+KLYC Konsol — açık	KLYC Konsol — open
+Konsol'u aç	Open Konsol
+Kayıtlı ağlara tek tuşla, yeni ağlara şifre girerek bağlan.	Connect to saved networks with one button, new ones by entering a password.
+A Yaz   X Sil   Y Büyük harf   Start Bağlan   B Vazgeç	A Type   X Delete   Y Caps   Start Connect   B Cancel
+▲▼ Ağ seç   A Bağlan   X Bağlantıyı kes   Y Yenile   Start Unut   B Kapat	▲▼ Select network   A Connect   X Disconnect   Y Refresh   Start Forget   B Close
+Ağlar taranıyor…	Scanning for networks…
+Bu bilgisayarda Wi‑Fi bağdaştırıcısı bulunamadı.	No Wi‑Fi adapter found on this computer.
+Çevrede ağ bulunamadı.	No networks found nearby.
+Bağlı: {0}	Connected: {0}
+Bağlı değil	Not connected
+Ağlar okunamadı.	Could not read networks.
+{0} ağına bağlanılıyor…	Connecting to {0}…
+{0} ağına bağlanıldı	Connected to {0}
+{0} ağına bağlanılamadı	Could not connect to {0}
+Bu ağ türü (kurumsal / WEP) desteklenmiyor — Windows ayarlarını kullan	This network type (enterprise / WEP) is not supported — use Windows settings
+Ağ profili eklenemedi	The network profile could not be added
+Bağlanılamadı — şifre yanlış olabilir	Could not connect — the password may be wrong
+Kayıtlı	Saved
+Zaten bağlısın	You are already connected
+“{0}” ağının şifresi	Password for “{0}”
+Wi‑Fi bağlantısı kesildi	Wi‑Fi disconnected
+{0} unutuldu	{0} forgotten
+bulunamadı · ernklyc/klyc-pulse	not found · ernklyc/klyc-pulse
+kapalı	off
+çalışıyor · v{0}	running · v{0}
+sorun görülmedi	no problems seen
+dikkat edilecek şeyler var	there are things to look at
+işlemci en çok {0} °C	CPU peaked at {0} °C
+ekran kartı {0} °C	graphics card {0} °C
+Oyun modu	Game mode
+Günlük mod	Daily mode
+Sessiz mod	Quiet mode
+Boşta modu	Idle mode
+çalışıyor	running
+Pulse raporu	Pulse report
+Pulse raporu: {0}	Pulse report: {0}
+ort. {0} FPS	avg. {0} FPS
+{0} dk	{0} min
+Pulse raporu · 	Pulse report ·
+Oyna	Play
+Favori	Favorite
+Sorun paketi masaüstüne yazıldı	The problem report was written to the desktop
+Paket hazırlanamadı: {0}	Could not prepare the package: {0}
+Konsol açıldı	Konsol opened
+Kütüphane yenilendi	Library refreshed
+Ses: {0}	Volume: {0}
+Parlaklık: {0}	Brightness: {0}
+Sessiz	Muted
+Otomatik	Automatic
+Otomatik: Windows diline göre · Türkçe ya da İngilizce'ye geçmek için A	Automatic: follows the Windows language · press A to switch between Turkish and English
+Sol çubuk	Left stick
+Sağ çubuk	Right stick
+Pil	Battery
+Ölü bölge	Dead zone
+Kablosuz	Wireless
+Kablolu	Wired
+Bilinmiyor	Unknown
+Dolu	Full
+Orta	Medium
+Yer imleri	Bookmarks
+Hızlı bağlantılar	Quick links
+Tarayıcı	Browser
+Sol çubukla imleci gez, A ile tıkla · Y: adres/arama · X: yazı kutusuna yaz	Move the cursor with the left stick, click with A · Y: address/search · X: type into a text box
+Google'da ara…	Search Google…
+Steam Mağaza	Steam Store
+Vikipedi	Wikipedia
+Dil Konsol yeniden açılınca değişir · Language changes when Konsol restarts	Dil Konsol yeniden açılınca değişir · Language changes when Konsol restarts
+Sürüm {0}	Version {0}
+destek, bağlantılar, güncelleme, kol olmadan kullanım	support, links, updates, using Konsol without a controller
+sa	h
+dk	min
+1 dk'dan az	under 1 min
+Oyunlar	Games
+Favoriler	Favorites
+Uygulamalar	Apps
+Yok	None
+Genel ayar	Global setting
+☆ Favori	☆ Favorite
+Son: {0}	Last: {0}
+{0} oyun	{0} games
+{0} uygulama	{0} apps
+{0} teklif	{0} offers
+Yeni oyun bulundu: {0}	New game found: {0}
+{0} yeni oyun bulundu	{0} new games found
+Kütüphane sıralaması	Library sorting
+◀ ▶ ya da A ile değiştir · Akıllı: favoriler, sonra son oynananlar. Ayrıca Kütüphane'de "Son oynananlar" sekmesi var	◀ ▶ or A to change · Smart: favorites, then recently played. There is also a "Recent" tab in the Library
+Son oynanan	Recently played
+Ada göre (A-Z)	By name (A-Z)
+En çok oynanan	Most played
+Akıllı (favoriler, son oynananlar)	Smart (favorites, recently played)
+Son oynananlar	Recent
+Henüz oynanan oyun yok	No games played yet
+Oynadığın oyunlar son oynanana göre burada sıralanır.	Games you play are listed here, most recent first.
+Eklenen	Added
+Controller {0} pili bitmek üzere — hemen şarj et	Controller {0} battery is almost empty — charge it now
+Controller {0} pili azaldı — şarj etmeyi unutma	Controller {0} battery is low — remember to charge it
+Ekran ve ses	Display and sound
+Ses çıkışını değiştir (kulaklık, hoparlör, TV) · çözünürlük ve yenileme hızı (15 sn içinde onaylamazsan eski ayara döner)	Switch the sound output (headset, speakers, TV) · resolution and refresh rate (reverts if you do not confirm within 15 s)
+SES ÇIKIŞI	SOUND OUTPUT
+EKRAN	DISPLAY
+Ses aygıtı bulunamadı	No audio device found
+✓ Kullanımda	✓ In use
+A: bunu kullan	A: use this
+Ekran bilgisi okunamadı	Display information could not be read
+Şu an	Current
+Çözünürlük	Resolution
+Yenileme hızı	Refresh rate
+Uygula	Apply
+Uygula (zaten bu ayarda)	Apply (already set)
+EKRAN AYARI DEĞİŞTİ	DISPLAY SETTING CHANGED
+Yeni ayar: {0}	New setting: {0}
+Bu ayarı koru	Keep this setting
+{0} sn	{0} s
+Geri al	Revert
+eski ayara dön	go back to the old setting
+Görüntü düzgün değilse hiçbir şeye basma: süre dolunca eski ayara kendiliğinden dönülür	If the picture looks wrong, press nothing: it goes back to the old setting by itself when time runs out
+Zaten bu aygıt kullanılıyor	This device is already in use
+Ses çıkışı: {0}	Sound output: {0}
+Ses aygıtı değiştirilemedi	Could not change the sound device
+Bu ekran bu ayarı desteklemiyor	This display does not support that setting
+Ekran ayarı değiştirilemedi	Could not change the display setting
+Ekran ayarı korundu	Display setting kept
+Ekran eski ayarına döndü	Display went back to its previous setting
+Eski ekran ayarı geri yüklenemedi	Could not restore the previous display setting
+Uygula / seç	Apply / select
+Değiştir	Change
+{0} Hz	{0} Hz
+İndirildi: {0}	Downloaded: {0}
+İndirme başarısız: {0}	Download failed: {0}
+İndiriliyor: {0} (Tarayıcı menüsünden izle)	Downloading: {0} (follow it in the browser menu)
+✓ {0} · A: klasörde göster	✓ {0} · A: show in folder
+{0} · X: iptal	{0} · X: cancel
+başarısız · X: kaldır	failed · X: remove
+iptal edildi · X: kaldır	cancelled · X: remove
+İNDİRMELER	DOWNLOADS
+▶  YouTube TV (kolla izle)	▶  YouTube TV (watch with the controller)
+D-pad · A: seç · B: geri	D-pad · A: select · B: back
+Gez	Navigate
+Üst çubukta Pulse bilgisi	Pulse info in the top bar
+KLYC Pulse çalışıyorsa seçili mod ve (açıksa) işlemci / ekran kartı ısısı üst çubukta görünür. Kapalıyken Pulse Konsol için sensör okumaz	When KLYC Pulse is running, the selected mode and (if available) CPU / GPU temperature appear in the top bar. While off, Pulse does not read sensors for Konsol
+Pulse modu	Pulse mode
+◀ ▶ ile mod seç, A ile uygula (KLYC Pulse'ta "Konsol'dan mod değiştirmeye izin ver" açık olmalı)	Pick a mode with ◀ ▶, apply with A (KLYC Pulse must have "Allow changing the mode from Konsol" turned on)
+Hızlandır	Boost
+Pulse'un Hızlandır'ını çalıştırır: zararsız geçici dosyaları temizler, belleği rahatlatır, mod ayarlarını doğrular (hiçbir uygulamayı kapatmaz)	Runs Pulse's Boost: cleans harmless temporary files, relieves memory, verifies the mode settings (closes no apps)
+PULSE	PULSE
+Pulse çalışmıyor	Pulse is not running
+İzin kapalı	Permission off
+Pulse çalışmıyor	Pulse is not running
+Pulse'ta komuta izin kapalı: Pulse → Ayarlar → "Konsol'dan mod değiştirmeye izin ver"	Commands are not allowed in Pulse: Pulse → Settings → "Allow changing the mode from Konsol"
+Komut Pulse'a yazılamadı	Could not write the command for Pulse
+Pulse'a gönderildi…	Sent to Pulse…
+Pulse: {0}	Pulse: {0}
+Pulse yanıt vermedi (Pulse açık mı ve Konsol'dan komuta izin verildi mi?)	Pulse did not respond (is Pulse running and are commands from Konsol allowed?)
+Mod uygulanıyor…	Applying mode…
+{0} modu	{0} mode
+İşlemci {0}°	CPU {0}°
+Ekran kartı {0}°	GPU {0}°

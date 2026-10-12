@@ -1,0 +1,45 @@
+<Application x:Class="KlycKonsol.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             ShutdownMode="OnExplicitShutdown">
+    <Application.Resources>
+        <FontFamily x:Key="IconFont">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
+        <FontFamily x:Key="UiFont">Segoe UI Variable Display, Segoe UI</FontFamily>
+
+        <!-- klyc-box paleti: mavi tonlu yakın-siyah zemin, çelik mavisi vurgu, "yanık" beyaz -->
+        <Color x:Key="GroundColor">#0B0D11</Color>
+        <Color x:Key="AccentColor">#6178AD</Color>
+        <Color x:Key="AccentDeepColor">#212B4D</Color>
+        <SolidColorBrush x:Key="Ground" Color="{StaticResource GroundColor}"/>
+        <SolidColorBrush x:Key="Accent" Color="{StaticResource AccentColor}"/>
+        <SolidColorBrush x:Key="Lit" Color="#F2F5FA"/>
+        <SolidColorBrush x:Key="Ink" Color="#0F1421"/>
+        <SolidColorBrush x:Key="Card" Color="#0EFFFFFF"/>
+        <SolidColorBrush x:Key="CardHover" Color="#1CFFFFFF"/>
+        <SolidColorBrush x:Key="CardStroke" Color="#1AFFFFFF"/>
+        <SolidColorBrush x:Key="Text" Color="#F2F5FA"/>
+        <SolidColorBrush x:Key="TextDim" Color="#A9B4C8"/>
+        <SolidColorBrush x:Key="Good" Color="#73C799"/>
+        <SolidColorBrush x:Key="Warn" Color="#F5B852"/>
+        <SolidColorBrush x:Key="Bad" Color="#FA9E80"/>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
+            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+        </Style>
+
+        <Style x:Key="Eyebrow" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource TextDim}"/>
+        </Style>
+
+        <!-- Cam kart -->
+        <Style x:Key="Glass" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource Card}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource CardStroke}"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="CornerRadius" Value="22"/>
+        </Style>
+    </Application.Resources>
+</Application>

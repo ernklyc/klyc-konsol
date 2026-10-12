@@ -1,0 +1,79 @@
+<UserControl x:Class="KlycKonsol.Pages.BrowserPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="clr-namespace:KlycKonsol.Ui">
+    <UserControl.Resources>
+        <Style x:Key="RoundBtn" TargetType="Border">
+            <Setter Property="Width" Value="72"/>
+            <Setter Property="Height" Value="72"/>
+            <Setter Property="CornerRadius" Value="36"/>
+            <Setter Property="Background" Value="#22FFFFFF"/>
+            <Setter Property="BorderBrush" Value="{StaticResource CardStroke}"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Margin" Value="0,0,14,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style x:Key="BtnGlyph" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource IconFont}"/>
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="Toolbar" Margin="60,0,60,18">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal">
+                <Border x:Name="BtnBack" Style="{StaticResource RoundBtn}"><TextBlock Text="&#xE72B;" Style="{StaticResource BtnGlyph}"/></Border>
+                <Border x:Name="BtnFwd" Style="{StaticResource RoundBtn}"><TextBlock Text="&#xE72A;" Style="{StaticResource BtnGlyph}"/></Border>
+                <Border x:Name="BtnReload" Style="{StaticResource RoundBtn}"><TextBlock Text="&#xE72C;" Style="{StaticResource BtnGlyph}"/></Border>
+                <Border x:Name="BtnHome" Style="{StaticResource RoundBtn}"><TextBlock Text="&#xE80F;" Style="{StaticResource BtnGlyph}"/></Border>
+            </StackPanel>
+
+            <Border x:Name="UrlPill" Grid.Column="1" Style="{StaticResource Glass}" CornerRadius="36" Height="72" Padding="30,0" Background="#22FFFFFF" Cursor="Hand">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE774;" FontFamily="{StaticResource IconFont}" FontSize="26" Foreground="{StaticResource TextDim}" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="UrlText" Text="Ara ya da adres yaz" FontSize="26" TextTrimming="CharacterEllipsis" MaxWidth="1000" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="14,0,0,0">
+                <Border x:Name="BtnMenu" Style="{StaticResource RoundBtn}" Width="auto" Padding="26,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE8A1;" Style="{StaticResource BtnGlyph}" Margin="0,0,12,0"/>
+                        <TextBlock Text="Sekmeler" FontSize="26" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TabCount" FontSize="22" FontWeight="Bold" Foreground="{StaticResource Accent}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <Border x:Name="BtnKeys" Style="{StaticResource RoundBtn}" Margin="0" Width="auto" Padding="26,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE765;" Style="{StaticResource BtnGlyph}" Margin="0,0,12,0"/>
+                        <TextBlock Text="Yaz" FontSize="26" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <!-- WebView2 buranın üstüne, Viewbox dışındaki katmanda oturur -->
+        <Border x:Name="Slot" Grid.Row="1" Margin="60,0,60,24" CornerRadius="8" BorderBrush="{StaticResource CardStroke}" BorderThickness="1.5" Background="#14000000">
+            <TextBlock x:Name="Status" Text="Tarayıcı hazırlanıyor…" FontSize="30" Foreground="{StaticResource TextDim}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
+
+        <ui:ListMenu x:Name="Menu" Grid.Row="1" Margin="200,10,200,24" VerticalAlignment="Top"/>
+
+        <ui:OnScreenKeyboard x:Name="Osk" Grid.Row="2" VerticalAlignment="Bottom"/>
+    </Grid>
+</UserControl>

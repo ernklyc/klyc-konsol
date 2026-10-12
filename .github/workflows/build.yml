@@ -1,0 +1,41 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Derle
+        run: dotnet build KlycKonsol.csproj -c Release
+      - name: Birim testleri
+        run: dotnet test tests/KlycKonsol.Tests/KlycKonsol.Tests.csproj -c Release
+
+  # Gerçek pencereyle arayüz duman testi (Windows UI Automation). Yalıtılmış veri, sanal kol; Türkçe + İngilizce tur.
+  ui-smoke:
+    runs-on: windows-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Derle
+        run: dotnet build KlycKonsol.csproj -c Release
+      - name: Arayüz duman testi
+        shell: pwsh
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File tests/e2e/ui-smoke.ps1 -ShotDir shots
+      - name: Ekran görüntüleri
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-smoke-shots
+          path: shots
+          if-no-files-found: ignore

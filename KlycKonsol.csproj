@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>KlycKonsol</AssemblyName>
+    <RootNamespace>KlycKonsol</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\klyc.ico</ApplicationIcon>
+    <Version>1.0.0</Version>
+    <StartupObject>KlycKonsol.Program</StartupObject>
+    <!-- Düşük kaynak: eşzamanlı (arka plan) GC iş parçacığı ve PGO enstrümantasyonu yok; yalnızca İngilizce satellite -->
+    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
+    <TieredPGO>false</TieredPGO>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Test projesi ayrı derlenir; ana projeye dahil olmasın -->
+    <Compile Remove="tests\**" />
+    <EmbeddedResource Remove="tests\**" />
+    <None Remove="tests\**" />
+    <Page Remove="tests\**" />
+    <Using Include="System.IO" />
+    <Using Include="System.Net.Http" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Oyun sırasında Konsol'un yerini alan küçük bekçi (kaynak: Guard\KlycGuard.c; derleme: Guard/uild.ps1) -->
+    <None Include="Guard\KlycGuard.exe" Link="KlycGuard.exe" CopyToOutputDirectory="PreserveNewest" Condition="Exists('Guard\KlycGuard.exe')" />
+    <EmbeddedResource Include="Localization\en.tsv" />
+    <Resource Include="Assets\klyc.ico" />
+    <Resource Include="Assets\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4258.31" />
+    <PackageReference Include="Velopack" Version="1.2.161" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>

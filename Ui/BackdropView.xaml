@@ -1,0 +1,14 @@
+<UserControl x:Class="KlycKonsol.Ui.BackdropView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             IsHitTestVisible="False">
+    <!-- Katmanlar kodda doldurulur: [hazır zemin bitmap'i] [görsel A] [görsel B] [hazır karartma bitmap'i].
+         Gradyanlar her karede çizilmesin diye bir kez bitmap'e çevrilir (WPF'te üst üste binen
+         yarı saydam tam ekran katmanlar en pahalı şeydir). -->
+    <Grid x:Name="Layers" Background="#0B0D11" RenderOptions.BitmapScalingMode="LowQuality">
+        <Image x:Name="Ground" Stretch="Fill" RenderOptions.BitmapScalingMode="Linear"/>
+        <Image x:Name="ImgA" Stretch="UniformToFill" Opacity="0" RenderOptions.BitmapScalingMode="Linear"/>
+        <Image x:Name="ImgB" Stretch="UniformToFill" Opacity="0" RenderOptions.BitmapScalingMode="Linear"/>
+        <Image x:Name="Dim" Stretch="Fill" RenderOptions.BitmapScalingMode="Linear"/>
+    </Grid>
+</UserControl>
