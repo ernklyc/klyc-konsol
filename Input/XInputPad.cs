@@ -56,7 +56,7 @@ public sealed class XInputPad
     const long RepeatRateMs = 100;
     public const double DefaultDeadzone = 0.24;   // 7849 / 32767: Microsoft'un önerdiği sol çubuk ölü bölgesi
 
-    readonly DispatcherTimer _timer = new(DispatcherPriority.Input) { Interval = TimeSpan.FromMilliseconds(12) };
+    readonly DispatcherTimer _timer = new(DispatcherPriority.Input) { Interval = TimeSpan.FromMilliseconds(ActiveMs) };
     readonly Dictionary<PadKey, long> _nextRepeat = new();
     readonly HashSet<PadKey> _down = new();
     readonly bool[] _connected = new bool[4];
@@ -192,7 +192,7 @@ public sealed class XInputPad
 
         var any = ReadMerged(now, out var st);
         if (any != Connected) { Connected = any; ConnectionChanged?.Invoke(any); }
-        if (!any) { State = default; _down.Clear(); return; }
+        if (!any) { State = default; _down.Clear(); Tune(false, default, now); return; }
         State = st;
 
         var lx = st.LX / 32768.0;
@@ -213,7 +213,27 @@ public sealed class XInputPad
         Update(PadKey.Guide, st.Buttons.HasFlag(Btn.Guide), false, now);
 
         Tick?.Invoke(st, dt);
+        Tune(true, st, now);
     }
+
+    long _lastActive = Environment.TickCount64;
+
+    /// <summary>
+    /// Yoklama aralığı uyarlanır: kol yokken 60 ms (takılınca ≤60 ms'de görülür), kolda girdi varken 12 ms, 2 sn boşta kalınca 30 ms.
+    /// Eskiden hep 12 ms'ydi: boştaki Konsol'da tek çekirdeğin ~%1'ini yiyordu (ölçüldü). İlk tuş basışı en çok bir aralık gecikir.
+    /// </summary>
+    void Tune(bool any, PadState st, long now)
+    {
+        var active = any && (st.Buttons != 0 || st.LX != 0 || st.LY != 0 || st.RX != 0 || st.RY != 0 || st.LT > 8 || st.RT > 8 || _down.Count > 0);
+        if (active) _lastActive = now;
+        var ms = NextIntervalMs(any, now - _lastActive);
+        if ((int)_timer.Interval.TotalMilliseconds != ms) _timer.Interval = TimeSpan.FromMilliseconds(ms);
+    }
+
+    public const int ActiveMs = 12, IdlePadMs = 30, IdleNoPadMs = 60;
+
+    /// <summary>Saf mantık: kol yoksa 60 ms; son girdiden beri 2 sn geçmediyse 12 ms; sonra 30 ms.</summary>
+    public static int NextIntervalMs(bool padPresent, long msSinceActive) => !padPresent ? IdleNoPadMs : msSinceActive < 2000 ? ActiveMs : IdlePadMs;
 
     void Update(PadKey key, bool isDown, bool repeat, long now)
     {

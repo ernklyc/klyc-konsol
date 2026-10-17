@@ -48,3 +48,11 @@ public class PadBatteryWatchTests
     public void Messages_AreDistinctPerSeverity() =>
         Assert.NotEqual(PadBatteryWatch.Message(0, 1), PadBatteryWatch.Message(0, 2));
 }
+
+public class PadPollIntervalTests
+{
+    [Fact] public void NoPad_PollsSlowly() => Assert.Equal(XInputPad.IdleNoPadMs, XInputPad.NextIntervalMs(false, 0));
+    [Fact] public void RecentInput_PollsFast() { Assert.Equal(XInputPad.ActiveMs, XInputPad.NextIntervalMs(true, 0)); Assert.Equal(XInputPad.ActiveMs, XInputPad.NextIntervalMs(true, 1999)); }
+    [Fact] public void IdlePad_BacksOff() => Assert.Equal(XInputPad.IdlePadMs, XInputPad.NextIntervalMs(true, 2000));
+    [Fact] public void Intervals_AreOrdered() => Assert.True(XInputPad.ActiveMs < XInputPad.IdlePadMs && XInputPad.IdlePadMs < XInputPad.IdleNoPadMs);
+}

@@ -12,6 +12,7 @@ Biçim [Keep a Changelog](https://keepachangelog.com/tr/) esaslıdır; sürümle
 
 ### Değişenler
 - Ayarlar'da satır sayısı arttı (SİSTEM: +4, PULSE: +4).
+- **Boşta işlemci kullanımı düştü:** kol yoklaması uyarlanır (kol yokken 60 ms, girdi varken 12 ms, 2 sn boşta 30 ms; eskiden hep 12 ms). Ölçüm (Konsol ekranda, boşta, 40 sn x3): tek çekirdeğin ortalama ~%2,8 → ~%1,7. Denenip bırakılanlar: ReadyToRun (açılış 2,06 → 2,01 sn, fark yok), arka plan katmanını önbelleğe almak (fark yok). Bellek ~195 MB ağırlıkla WPF çalışma zamanı.
 - 268 birim test (Konsol modu mantığı sahte kayıt defteriyle; gerçek Windows kaydına dokunulmaz).
 
 ## [1.0.1] — 2026-10-17
