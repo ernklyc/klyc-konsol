@@ -9,11 +9,13 @@ Biçim [Keep a Changelog](https://keepachangelog.com/tr/) esaslıdır; sürümle
 - **Windows masaüstüne geç**, **şifresiz otomatik oturum açma** (Windows'un `netplwiz` penceresini açar; şifreyi Konsol girmez) ve **Yönetici olarak başlat (UAC'siz)** (zamanlanmış görev; varsayılan KAPALI) satırları.
 - **Pulse'u kolla tam yönet:** Ayarlar → PULSE'ta mod, Hızlandır, **Temizlik**, **oyun açılınca otomatik mod**, **ısı hedefi** (Kapalı/75/80/85/90 °C) ve **fan desteği** (Pulse ≥ 1.12.0; izin açıksa). Gerçek Konsol + gerçek Pulse ile uçtan uca denendi (otomatik mod açılıp kapandı, ayar dosyasına yazıldı).
 - Konsol'dan çıkarken (Konsol modundaysa) önce Windows masaüstü açılır.
+- **Koleksiyonlar:** oyunun üzerindeyken Start → "Koleksiyona ekle / çıkar"; kendi adınla (ekran klavyesi) en çok 8 koleksiyon. Kütüphane'de yeni **Koleksiyonlar** çipi (A: sonraki koleksiyon). Boşalan koleksiyon kendiliğinden kalkar.
+- **Oyun başına Pulse modu:** Oyun ayrıntılarında "Bu oyun için Pulse modu" satırı (◀▶ seç, A uygula): o oyun için Pulse modunu seçer ya da o oyunda otomatik geçişi kapatır. Pulse ≥ 1.12.0 ve izin açıkken görünür; Pulse oyunu ilk oynayınca profil oluşturur (Konsol profil uyduramaz, yoksa satır bunu söyler).
 
 ### Değişenler
 - Ayarlar'da satır sayısı arttı (SİSTEM: +4, PULSE: +4).
 - **Boşta işlemci kullanımı düştü:** kol yoklaması uyarlanır (kol yokken 60 ms, girdi varken 12 ms, 2 sn boşta 30 ms; eskiden hep 12 ms). Ölçüm (Konsol ekranda, boşta, 40 sn x3): tek çekirdeğin ortalama ~%2,8 → ~%1,7. Denenip bırakılanlar: ReadyToRun (açılış 2,06 → 2,01 sn, fark yok), arka plan katmanını önbelleğe almak (fark yok). Bellek ~195 MB ağırlıkla WPF çalışma zamanı.
-- 268 birim test (Konsol modu mantığı sahte kayıt defteriyle; gerçek Windows kaydına dokunulmaz).
+- 285 birim test (Konsol modu mantığı sahte kayıt defteriyle; gerçek Windows kaydına dokunulmaz).
 
 ## [1.0.1] — 2026-10-17
 

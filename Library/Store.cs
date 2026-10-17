@@ -79,6 +79,8 @@ public sealed class AppState
     public bool Haptics { get; set; } = true;
     public Dictionary<string, long> LastPlayed { get; set; } = new();
     public List<string> Favorites { get; set; } = new();
+    /// <summary>Kullanıcının koleksiyonları (en çok 8): Kütüphane → "Koleksiyonlar" çipi.</summary>
+    public List<GameCollection> Collections { get; set; } = new();
     /// <summary>Steam hesabındaki oyunların adı/türü (appid → bilgi); kurulu olmayanlar listesi için önbellek.</summary>
     public Dictionary<string, OwnedInfo> SteamOwned { get; set; } = new();
     /// <summary>Konsol'un kendi izlediği oynama süreleri (saniye); Steam oyunları Steam'in kaydından okunur.</summary>

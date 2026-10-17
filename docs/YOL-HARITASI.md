@@ -34,7 +34,7 @@ Efor: **S** küçük (bir oturum) · **M** orta · **L** büyük. Durum: ⏳ sı
 | # | İş | Durum |
 |---|---|---|
 | 12 | PlayStation / Switch kolları köprü olmadan (HID) | ✅ 1.0.0 (gerçek kolla denenmedi; tuş atama yok; bekçi PS/Home tuşunu görmez) |
-| 13 | Kütüphane: son oynananlar, sıralama, yeni kurulumu algılama | ✅ 1.0.0 (koleksiyon, başarım/ekran görüntüsü yok) |
+| 13 | Kütüphane: son oynananlar, sıralama, yeni kurulumu algılama, koleksiyonlar | ✅ 1.0.0 / koleksiyonlar 1.1.0 (başarım/ekran görüntüsü yok) |
 | 14 | Tarayıcı: indirme yönetimi, YouTube için TV modu | ✅ 1.0.0 (reklam engelleme, şifre yöneticisi yok) |
 | 15 | Sistem: ses çıkışı değiştirme, çözünürlük/yenileme hızı, pil uyarısı | ✅ 1.0.0 (zamanlı kapatma yok) |
 | 16 | **Konsol modu**: bilgisayar açılınca Windows kabuğu yerine doğrudan Konsol | ✅ 1.1.0 (isteğe bağlı, varsayılan KAPALI; kullanıcı açıkça istedi). Çok katmanlı geri dönüş ve geri alma yolları var (README). **Gerçek oturum açılışında denenmedi** |

@@ -505,3 +505,19 @@ Pulse oyunu bir kez oynayınca öğrenir	Pulse learns the game after you play it
 Otomatik geçiş kapalı	Automatic switching off
   ·  A uygula	  ·  A to apply
 Pulse bu oyunu henüz tanımıyor: oyunu bir kez oynayınca profili oluşur	Pulse does not know this game yet: its profile is created after you play it once
+Koleksiyonlar	Collections
+Sonraki koleksiyon	Next collection
+Henüz koleksiyon yok	No collections yet
+Bir oyunun üzerindeyken Start'a bas → Koleksiyona ekle / çıkar.	While on a game, press Start → Add to / remove from collection.
+Bu koleksiyonda gösterilecek oyun yok	No games to show in this collection
+Oyunlar kurulu değil ya da kol desteği filtresi (Back) gizliyor olabilir.	The games may not be installed, or the controller-support filter (Back) may be hiding them.
+Koleksiyona ekle / çıkar	Add to / remove from collection
+Yeni koleksiyon…	New collection…
+Geri	Back
+Koleksiyon adı	Collection name
+Koleksiyon eklenemedi (en çok 8 koleksiyon, ad boş olamaz)	Could not add collection (up to 8 collections, name cannot be empty)
+Koleksiyon eklenemedi (en çok 8 koleksiyon)	Could not add collection (up to 8 collections)
+Koleksiyon adı boş olamaz	Collection name cannot be empty
+{0} zaten {1} koleksiyonunda	{0} is already in the {1} collection
+{0} → {1}	{0} → {1}
+{0} ← {1} koleksiyonundan çıkarıldı	{0} removed from the {1} collection
