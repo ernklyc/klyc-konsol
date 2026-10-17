@@ -1,6 +1,6 @@
 # Proje durumu
 
-**Güncel sürüm: 1.0.0** (GitHub Releases'te, 249 birim testi + gerçek pencereyle arayüz testleri). Son güncelleme: 2026-10-12.
+**Güncel sürüm: 1.0.1** (GitHub Releases'te, 257 birim testi + gerçek pencereyle arayüz testleri). Son güncelleme: 2026-10-12.
 Bu belge "ne var, ne kadar doğrulandı" sorusunun tek kaynağıdır. Her değişiklikten sonra güncelle.
 
 Doğrulama düzeyleri: **✔ gerçek** = kullanıcının bilgisayarında gerçek veriyle/donanımla görüldü · **◐ sahte** = sahte oyun/sanal tuşla otomatik denendi ·
@@ -64,6 +64,7 @@ Doğrulama düzeyleri: **✔ gerçek** = kullanıcının bilgisayarında gerçek
 | Tarayıcı: **indirme yöneticisi** | ✔ gerçek | Yerel sunucudan 3 MB: pencere açılmadı, güvenli ad, ikinci indirmede "(2)", menüde liste. İptal ve "klasörde göster" gerçek pencerede denenmedi |
 | **Pulse ile iki yönlü çalışma** (üst çubuk çipi, canlı ısı, mod seç / Hızlandır) | ✔ gerçek (yetkisiz Pulse) | Gerçek Konsol penceresi + gerçek Pulse, yalıtılmış klasörlerle: izin kapalıyken komut reddedildi ve neden bildirildi; izin açıkken Konsol arayüzünden "Oyun" modu seçilip uygulandı, çip güncellendi, Günlük'e geri dönüldü; `exec` gibi komut reddedildi, hiçbir program açılmadı. **Yetkili (UAC) Pulse ile ve gerçek Hızlandır ile denenmedi** |
 | Otomatik arayüz testi (CI) | ✔ yerel 23/23 + ✔ GitHub CI | `tests/e2e/ui-smoke.ps1` hem bu bilgisayarda hem GitHub'ın `windows-latest` makinesinde (`ui-smoke` işi) geçti; tarayıcı/ekran testleri elle |
+| İlk açılışta "Windows ile başlat" kendiliğinden (1.0.1) | birim ✖ gerçek açılış | Mantık ve kayıt komutu birim testli; **gerçek Windows açılışında Konsol'un gelmesi denenmedi** (kayıt yazma bu araçta sanal olduğu için gerçek Run anahtarı Konsol'un kendi açılışında yazılır) |
 | Uykudan uyanma / ekran kapanıp açılma | ✖ denenmedi | Kod hazır (0.8.0); bilgisayarı uyutmak otomasyonu keser, denenmedi |
 | Konsol soğuk açılışı (Guide sonrası) | ✔ gerçek | ~3 sn |
 | Akıcılık | ◐ | UI iş parçacığı %90+ boş; sekme geçişinde en uzun takılma ~70–85 ms (öncesi ~190 ms) |

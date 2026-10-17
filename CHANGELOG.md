@@ -2,6 +2,12 @@
 
 Biçim [Keep a Changelog](https://keepachangelog.com/tr/) esaslıdır; sürümleme [SemVer](https://semver.org/lang/tr/).
 
+## [1.0.1] — 2026-10-17
+
+### Değişenler
+- **Bilgisayar açılınca Konsol kendiliğinden açılır (PlayStation gibi):** ilk normal açılışta "Windows ile başlat" bir kez otomatik açılır ve "Açılışta kol yoksa gizli bekle" kapatılır; yani güç düğmesine basınca (oturum açıldığında) doğrudan arayüz gelir. İstemezsen Ayarlar'dan kapatırsın; kapattıktan sonra bir daha kendiliğinden açılmaz. Test/otomasyon açılışları gerçek Windows kaydına dokunmaz. 9 yeni birim test (toplam 257).
+- Tam "açılır açılmaz" için ayrıca Windows'ta **otomatik oturum açma** gerekir (şifre ekranı çıkmasın): Windows ayarı olduğu için Konsol açmaz; `README` → "PlayStation gibi kullanmak" bölümünde adımlar var.
+
 ## [1.0.0] — 2026-10-12
 
 Konsol artık "kurulum dosyası + kendi kendine güncelleme + iki dil + Pulse ile iki yönlü" bir ürün.

@@ -100,6 +100,13 @@ simgeye sağ tıklayıp "Konsol'dan çık" denir. Kol çıkarılırsa ekranda bi
 
 Masaüstündeki `Game` gibi klasörlerdeki `.url` / `.lnk` kısayolları da otomatik taranır.
 
+## PlayStation gibi kullanmak (açılır açılmaz Konsol)
+
+1. Konsol'u kur ve bir kez aç: "Windows ile başlat" kendiliğinden açılır (Ayarlar'dan kapatılabilir).
+2. **KLYC Pulse'ı da kur** ve Pulse → Ayarlar'dan "Windows ile başlat"ı aç (yönetici penceresi çıkarmadan görev zamanlayıcı ile açılır) ve **"Konsol'dan mod değiştirmeye izin ver"i aç**. Sonra kolla Konsol → Ayarlar → PULSE'tan modu seçer, Hızlandır'ı çalıştırırsın; üst çubukta mod ve ısı görünür.
+3. Şifre ekranını atlamak için Windows'ta otomatik oturum açmayı aç (bu bir Windows güvenlik ayarıdır, Konsol açmaz): önce Ayarlar → Hesaplar → Oturum açma seçenekleri → "Windows Hello gerektir"i kapat; sonra `Win+R` → `netplwiz` → "Kullanıcıların bu bilgisayarı kullanması için…" kutusunu kaldır → şifreni bir kez gir. (Bilgisayarı başkaları da kullanıyorsa ya da dizüstüyse güvenlik riskini düşün.)
+4. Kolu takılı tut ya da Bluetooth ile eşleştir: bilgisayar açılınca Konsol gelir; kolla oyun seç. Masaüstüne inmek için Guide / Ctrl+Alt+K ya da Ayarlar → Masaüstü Modu.
+
 ## Oyun modu
 
 Oyun başlayınca Konsol **tamamen kapanır** ve yerine `KlycGuard.exe` adlı çok küçük bir bekçi çalışır. Bekçi yalnızca üç şey yapar: Guide

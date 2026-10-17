@@ -121,6 +121,8 @@ public sealed class AppState
     public bool IncludePartial { get; set; } = true;
     /// <summary>Arayüz dili: "auto" (Windows Türkçeyse Türkçe, değilse İngilizce), "tr" ya da "en".</summary>
     public string Language { get; set; } = "auto";
+    /// <summary>İlk açılışta "Windows ile başlat" kendiliğinden açıldı mı (bir kez yapılır; kullanıcı sonradan kapatırsa yeniden açılmaz).</summary>
+    public bool AutostartInitialized { get; set; }
     /// <summary>Kütüphane sıralaması: "smart" (varsayılan), "recent", "name", "playtime".</summary>
     public string LibrarySort { get; set; } = "smart";
     /// <summary>Üst çubukta Pulse modu / ısı bilgisini göster (Pulse çalışıyorsa). Kapatılırsa Pulse sensör okumaz.</summary>

@@ -33,7 +33,10 @@ public partial class App : Application
         }
 
         base.OnStartup(e);
-        Library.Loc.Configure(Library.AppState.Load().Language);
+        var st0 = Library.AppState.Load();
+        Library.Loc.Configure(st0.Language);
+        if (Input.StartupPolicy.ShouldInitAutostart(e.Args, st0, Environment.GetEnvironmentVariable("KLYC_DATA_DIR") is { Length: > 0 }) && Environment.ProcessPath is { } pp)
+            Library.AppLog.Write("başlangıç", "ilk açılış: Windows ile başlat açıldı = " + Input.StartupPolicy.InitAutostart(st0, pp));
 
         // Konsol arayüzünde çökme olmasın: hatayı günlüğe yaz, çalışmaya devam et.
         DispatcherUnhandledException += (_, ex) =>
