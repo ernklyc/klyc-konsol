@@ -28,6 +28,7 @@ public sealed class GameDetailPanel : Border
     int _row;        // 0 = düğmeler, 1.. = ayar satırları
     int _btn;        // 0 Oyna, 1 Favori
     CancellationTokenSource? _cts;
+    string? _pulsePending;   // 4. satırda seçili (henüz gönderilmemiş) Pulse modu: mod anahtarı ya da "off"
 
     static readonly string[] PowerValues = { "auto", "off" };
     static readonly string[] ReturnValues = { "default", "on", "off" };
@@ -81,7 +82,7 @@ public sealed class GameDetailPanel : Border
     public void Open(Game g)
     {
         _game = g;
-        _row = 0; _btn = 0;
+        _row = 0; _btn = 0; _pulsePending = null;
         _cover.Background = g.Accent;
         _cover.Child = new Border
         {
@@ -231,6 +232,46 @@ public sealed class GameDetailPanel : Border
         AddRow(2, "Oyun kapanınca Konsol'a dön", o.AutoReturn switch { "on" => "Açık", "off" => "Kapalı", _ => "Genel ayar" });
         var sup = _shell.State.SupportOverride.TryGetValue(g.Id, out var sv) ? sv : "auto";
         AddRow(3, "Kol desteği", sup switch { "full" => "Var (elle)", "none" => "Yok (elle)", _ => "Otomatik" });
+        if (PulseRowVisible(out var feed, out var profile))
+        {
+            if (profile is null) AddRow(4, "Bu oyun için Pulse modu", "Pulse oyunu bir kez oynayınca öğrenir");
+            else
+            {
+                _pulsePending ??= CurrentPulseChoice(profile);
+                var cur = CurrentPulseChoice(profile);
+                var label = _pulsePending == "off" ? "Otomatik geçiş kapalı" : feed!.Modes?.FirstOrDefault(m => m.Key == _pulsePending)?.Title ?? PulseLink.ModeName(_pulsePending);
+                AddRow(4, "Bu oyun için Pulse modu", label + (_pulsePending != cur ? "  ·  A uygula" : ""));
+            }
+        }
+    }
+
+    static string CurrentPulseChoice(PulseGameProfile p) => p.Enabled ? p.Mode : "off";
+
+    /// <summary>Satır yalnızca Pulse çalışıyor ve komut kabul ediyorsa görünür (Pulse → Ayarlar → Konsol'dan mod değiştirmeye izin ver).</summary>
+    bool PulseRowVisible(out PulseFeed? feed, out PulseGameProfile? profile)
+    {
+        feed = _shell.LatestPulse ?? PulseLink.ReadFeed(); profile = null;
+        if (_game is not { Kind: EntryKind.Game } g || !g.IsInstalled) return false;
+        if (!PulseLink.IsAlive(feed) || feed is not { AcceptsCommands: true }) return false;
+        profile = PulseLink.ProfileFor(feed, g.Title, g.InstallDir);
+        return true;
+    }
+
+    int MaxRow() => _game is { Kind: EntryKind.Game, IsInstalled: true } ? (PulseRowVisible(out _, out _) ? 4 : 3) : 0;
+
+    void CyclePulse(int dir)
+    {
+        if (!PulseRowVisible(out var feed, out var profile) || profile is null) return;
+        var keys = (feed!.Modes?.Select(m => m.Key) ?? Enumerable.Empty<string>()).Append("off").ToArray();
+        _pulsePending = Next(keys, _pulsePending ?? CurrentPulseChoice(profile), dir);
+    }
+
+    void ApplyPulse()
+    {
+        if (!PulseRowVisible(out _, out var profile)) return;
+        if (profile is null) { _shell.Toast("Pulse bu oyunu henüz tanımıyor: oyunu bir kez oynayınca profili oluşur"); return; }
+        if (_pulsePending is null || _pulsePending == CurrentPulseChoice(profile)) return;
+        _shell.SendPulseCommand("gamemode", _pulsePending, profile.Name);
     }
 
     void AddRow(int index, string label, string value)
@@ -258,7 +299,7 @@ public sealed class GameDetailPanel : Border
     {
         if (!IsOpen) return false;
         var g = _game!;
-        var maxRow = g.Kind == EntryKind.Game && g.IsInstalled ? 3 : 0;
+        var maxRow = MaxRow();
         switch (key)
         {
             case PadKey.Up: _row = Math.Max(0, _row - 1); break;
@@ -273,6 +314,7 @@ public sealed class GameDetailPanel : Border
                     if (_btn == 0) { Close(); _shell.Launch(g); return true; }
                     _shell.ToggleFavorite(g); _onChanged();
                 }
+                else if (_row == 4) ApplyPulse();
                 else Cycle(1);
                 break;
         }
@@ -287,6 +329,7 @@ public sealed class GameDetailPanel : Border
         var o = Opt;
         switch (_row)
         {
+            case 4: CyclePulse(dir); return;
             case 1: o.PowerPlan = Next(PowerValues, o.PowerPlan, dir); break;
             case 2: o.AutoReturn = Next(ReturnValues, o.AutoReturn, dir); break;
             case 3:

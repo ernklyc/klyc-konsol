@@ -190,4 +190,39 @@ public class PulseCommandValueTests
         Assert.Equal(80, f!.HeatTarget);
         Assert.Null(PulseLink.ParseFeed("{\"schema\":1,\"updatedAt\":1,\"running\":true}")!.HeatTarget);
     }
+
+    // ---- Oyun başına Pulse modu ----
+
+    static string Feed(string extra = "") => "{\"schema\":1,\"updatedAt\":1800000000,\"running\":true,\"acceptsCommands\":true" + extra + "}";
+
+    [Fact]
+    public void Feed_ParsesGameProfiles_AndOldFeedHasNone()
+    {
+        var f = PulseLink.ParseFeed(Feed(",\"gameProfiles\":[{\"name\":\"Hades2\",\"mode\":\"sessiz\",\"enabled\":true},{\"name\":\"cs2\",\"mode\":\"oyun\",\"enabled\":false},{\"mode\":\"x\"}]"))!;
+        Assert.Equal(2, f.GameProfiles!.Count);
+        Assert.Equal(new PulseGameProfile("Hades2", "sessiz", true), f.GameProfiles[0]);
+        Assert.False(f.GameProfiles[1].Enabled);
+        Assert.Null(PulseLink.ParseFeed(Feed())!.GameProfiles);
+    }
+
+    [Fact]
+    public void ProfileFor_MatchesByNameOrInstallDir_AndNeverInvents()
+    {
+        var f = PulseLink.ParseFeed(Feed(",\"gameProfiles\":[{\"name\":\"Hades II\",\"mode\":\"oyun\",\"enabled\":true},{\"name\":\"fc25\",\"mode\":\"oyun\",\"enabled\":true},{\"name\":\"a1\",\"mode\":\"oyun\",\"enabled\":true}]"));
+        Assert.Equal("Hades II", PulseLink.ProfileFor(f, "hades ii", null)!.Name);
+        Assert.Equal("fc25", PulseLink.ProfileFor(f, "EA SPORTS FC 25", @"C:\Games\EA Sports FC25\Game")!.Name);
+        Assert.Null(PulseLink.ProfileFor(f, "Bilinmeyen", @"C:\Games\Other"));
+        Assert.Null(PulseLink.ProfileFor(f, "Zzz", @"C:\Games\a1b2"));      // çok kısa ad klasör yolundan eşleşmez
+        Assert.Null(PulseLink.ProfileFor(null, "Hades II", null));
+        Assert.Null(PulseLink.ProfileFor(PulseLink.ParseFeed(Feed()), "Hades II", null));
+    }
+
+    [Fact]
+    public void BuildCommand_GameMode_CarriesProfileNameAsValue()
+    {
+        using var d = System.Text.Json.JsonDocument.Parse(PulseLink.BuildCommand("k123456789abcde", "gamemode", "sessiz", 1800000000, "Hades II"));
+        Assert.Equal("gamemode", d.RootElement.GetProperty("action").GetString());
+        Assert.Equal("sessiz", d.RootElement.GetProperty("mode").GetString());
+        Assert.Equal("Hades II", d.RootElement.GetProperty("value").GetString());
+    }
 }

@@ -18,8 +18,11 @@ public sealed record PulseModeInfo(string Key, string Title);
 /// <summary>Konsol'un gönderdiği son komutun Pulse tarafındaki sonucu.</summary>
 public sealed record PulseCommandResult(string Id, string Action, bool Ok, string Message, long At);
 
+/// <summary>Pulse'ın bildiği oyun profili: Mode = mod anahtarı, Enabled=false ise o oyunda otomatik geçiş kapalı.</summary>
+public sealed record PulseGameProfile(string Name, string Mode, bool Enabled);
+
 public sealed record PulseFeed(int Schema, long UpdatedAt, string? PulseVersion, bool Running, string? ModeKey, bool ModeApplying, bool AcceptsCommands, PulseReport? LastReport, bool AutoGameMode = false,
-    string? ModeTitle = null, List<PulseModeInfo>? Modes = null, PulseLive? Live = null, PulseCommandResult? LastCommand = null, int? HeatTarget = null);
+    string? ModeTitle = null, List<PulseModeInfo>? Modes = null, PulseLive? Live = null, PulseCommandResult? LastCommand = null, int? HeatTarget = null, List<PulseGameProfile>? GameProfiles = null);
 
 /// <summary>
 /// KLYC Pulse (kardeş proje) ile dosya tabanlı haberleşme: Pulse'ın `konsol-feed.json` özetini okur, Konsol kendi durumunu `status.json` (şema 2) olarak yazar.
@@ -77,9 +80,13 @@ public static class PulseLink
             PulseCommandResult? cmd = null;
             if (r.TryGetProperty("lastCommand", out var lc) && lc.ValueKind == JsonValueKind.Object && Str(lc, "id") is { Length: > 0 } cid)
                 cmd = new PulseCommandResult(cid, Str(lc, "action") ?? "", Bool(lc, "ok"), Str(lc, "message") ?? "", Long(lc, "at") ?? 0);
+            List<PulseGameProfile>? profiles = null;
+            if (r.TryGetProperty("gameProfiles", out var gp) && gp.ValueKind == JsonValueKind.Array)
+                profiles = gp.EnumerateArray().Where(x => x.ValueKind == JsonValueKind.Object && Str(x, "name") is { Length: > 0 })
+                    .Select(x => new PulseGameProfile(Str(x, "name")!, Str(x, "mode") ?? "", !x.TryGetProperty("enabled", out _) || Bool(x, "enabled"))).ToList();
             return new PulseFeed((int?)Long(r, "schema") ?? 1, Long(r, "updatedAt") ?? 0, Str(r, "pulseVersion"), Bool(r, "running"),
                 mode is { } me ? Str(me, "key") : null, mode is { } me2 && Bool(me2, "applying"), Bool(r, "acceptsCommands"), report, Bool(r, "autoGameMode"),
-                Str(r, "modeTitle"), modes, live, cmd, (int?)Dbl(r, "heatTarget"));
+                Str(r, "modeTitle"), modes, live, cmd, (int?)Dbl(r, "heatTarget"), profiles);
         }
         catch (JsonException) { return null; }
     }
@@ -139,6 +146,19 @@ public static class PulseLink
         if (Normalize(title) == rep) return r;
         if (!string.IsNullOrEmpty(installDir) && Normalize(installDir).Contains(rep, StringComparison.Ordinal)) return r;
         return null;
+    }
+
+    /// <summary>
+    /// Pulse'ın bu oyun için tuttuğu profil (oyun ilk oynandığında Pulse oluşturur; adı çoğunlukla exe adıdır, "Hades2"). Eşleşme: ad tam eşleşir ya da
+    /// kurulum klasörü yolunda profil adı geçer. Yoksa null — Konsol yeni profil yaratamaz.
+    /// </summary>
+    public static PulseGameProfile? ProfileFor(PulseFeed? feed, string title, string? installDir)
+    {
+        if (feed?.GameProfiles is not { Count: > 0 } list) return null;
+        var t = Normalize(title);
+        var dir = Normalize(installDir);
+        return list.FirstOrDefault(p => t.Length > 0 && Normalize(p.Name) == t)
+            ?? list.FirstOrDefault(p => dir.Length > 0 && Normalize(p.Name) is { Length: >= 4 } n && dir.Contains(n, StringComparison.Ordinal));
     }
 
     public static string ModeName(string? key) => key switch

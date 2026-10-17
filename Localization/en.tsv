@@ -500,3 +500,8 @@ Yönetici onayı bekleniyor…	Waiting for administrator approval…
 Yapılamadı (onay verilmedi ya da engellendi)	Could not do it (not approved or blocked)
 Yönetici olarak başlatma kapatıldı	Starting as administrator is turned off
 Konsol bir sonraki oturum açışında yönetici yetkisiyle açılır	Konsol will start with administrator rights at the next sign-in
+Bu oyun için Pulse modu	Pulse mode for this game
+Pulse oyunu bir kez oynayınca öğrenir	Pulse learns the game after you play it once
+Otomatik geçiş kapalı	Automatic switching off
+  ·  A uygula	  ·  A to apply
+Pulse bu oyunu henüz tanımıyor: oyunu bir kez oynayınca profili oluşur	Pulse does not know this game yet: its profile is created after you play it once
