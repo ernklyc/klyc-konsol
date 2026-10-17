@@ -66,3 +66,7 @@ Gerçek pencereyle arayüz testleri: `tests/e2e/` (bkz. oradaki README); CI'da `
 1. `KlycKonsol.csproj` içindeki `<Version>` ve `CHANGELOG.md` güncellenir; `dotnet test` + `tests/e2e/ui-smoke.ps1` yeşil olmalı.
 2. `Yayinla.ps1` → `dist\KLYC-Konsol-Setup-v<sürüm>.exe`, `dist\KLYC-Konsol-<sürüm>-win-x64.zip` ve `dist\velopack\*` (güncelleme paketleri).
 3. `gh release create v<sürüm> --title ... --notes ...` ile Setup.exe, zip **ve** `dist\velopack` içindeki `*.nupkg`, `releases.win.json`, `RELEASES`, `assets.win.json` yüklenir (uygulama içi güncelleme bunları okur); güncelleme denetimi bu sürümü görür.
+
+## KLYC Shell (Konsol modu gözetmeni)
+
+`Guard/KlycShell.c` (saf Win32, ~135 KB): kabuk olarak kayıtlıyken Konsol'u başlatır/yeniden başlatır, sorunda Windows masaüstünü açar, **asla çıkmaz** (kabuk çıkarsa Windows oturumu kapatır). Argümanlar: `--konsol <exe> [--desktop <exe>] [--task <görev>] [--poll ms] [--max n] [--window sn] [--miss n]`. Derleme (MSVC): `powershell -File Guard/build-shell.ps1`; depodaki `KlycShell.exe` SHA-256: `95d74f9f6fcb63754e14765e2b9a62e87cd7f80a0a9d63e2fcebb1f1cff9ba6d`. Sınama: `tests/e2e/shell-e2e.ps1` (sahte Konsol/masaüstü; gerçek Konsol/bekçi açıkken çalışmaz). Kayıt: `Input/ShellMode.cs` (HKCU Winlogon\Shell; yedek `AppState.ShellBackup`); kalıcı kopya `%LocalAppData%\KLYC-Konsol\shell\KlycShell.exe` (güncellemeden etkilenmez).

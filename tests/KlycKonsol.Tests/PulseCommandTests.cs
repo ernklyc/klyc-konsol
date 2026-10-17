@@ -172,3 +172,22 @@ public class PulseCommandTests : IDisposable
         Assert.False(t.Pending);
     }
 }
+
+public class PulseCommandValueTests
+{
+    [Fact]
+    public void BuildCommand_CarriesValue_OnlyWhenGiven()
+    {
+        using var d = System.Text.Json.JsonDocument.Parse(PulseLink.BuildCommand("k123456789abcde", "heat", null, 1800000000, "85"));
+        Assert.Equal("85", d.RootElement.GetProperty("value").GetString());
+        Assert.False(System.Text.Json.JsonDocument.Parse(PulseLink.BuildCommand("k123456789abcde", "clean", null, 1800000000)).RootElement.TryGetProperty("value", out _));
+    }
+
+    [Fact]
+    public void Feed_ParsesHeatTarget()
+    {
+        var f = PulseLink.ParseFeed("{\"schema\":1,\"updatedAt\":1,\"running\":true,\"acceptsCommands\":true,\"heatTarget\":80}");
+        Assert.Equal(80, f!.HeatTarget);
+        Assert.Null(PulseLink.ParseFeed("{\"schema\":1,\"updatedAt\":1,\"running\":true}")!.HeatTarget);
+    }
+}

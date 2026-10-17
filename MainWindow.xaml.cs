@@ -150,14 +150,17 @@ public partial class MainWindow : Window, IShell
     protected override System.Windows.Automation.Peers.AutomationPeer? OnCreateAutomationPeer() => null;
 
     void ExitApp() { _exiting = true; Application.Current.Shutdown(); }
-    void IShell.Exit() => ExitApp();
+
+    /// <summary>Kullanıcı Konsol'dan çıkıyor: Konsol modundaysa önce Windows masaüstü açılır (yoksa kabuk gözetmeni Konsol'u yeniden başlatırdı). Oyun için bekçiye devirde çağrılmaz.</summary>
+    void UserQuit() { try { if (ShellMode.IsEnabled()) ShellMode.EnsureExplorer(); } catch { } ExitApp(); }
+    void IShell.Exit() => UserQuit();
 
     /// <summary>Alt+F4 / görev çubuğundan kapat: pencere yok olup uygulama gizli kalmasın; onayla çık.</summary>
     void OnWindowClosing(object? sender, System.ComponentModel.CancelEventArgs e)
     {
         if (_exiting) return;
         e.Cancel = true;
-        if (_mode == Mode.Launcher) Confirm("KLYC Konsol kapatılsın mı?", ExitApp);
+        if (_mode == Mode.Launcher) Confirm("KLYC Konsol kapatılsın mı?", UserQuit);
     }
 
     /// <summary>Kol takılı / çıkarılınca bilgi ver; kol yokken fare ve klavyeyle de kullanılabildiğini hatırlat.</summary>
@@ -209,7 +212,7 @@ public partial class MainWindow : Window, IShell
         InitGuardState();
         UiSound.Warm();
         if (_adopted == null) GameSession.End(_state);              // önceki oturum çöktüyse güç planı / bildirimleri geri yükle (oyun sürerken devralındıysa DEĞİL)
-        _tray = new TrayIcon(() => OnPadKey(PadKey.Guide), ExitApp, () => _mode == Mode.Launcher);
+        _tray = new TrayIcon(() => OnPadKey(PadKey.Guide), UserQuit, () => _mode == Mode.Launcher);
         Application.Current.Exit += (_, _) => { if (!_handoff) GameSession.End(_state); _tray?.Dispose(); };
         // Ekran çözünürlüğü/ikinci monitör değişince ve uykudan uyanınca tam ekran düzeni toparlansın
         Microsoft.Win32.SystemEvents.DisplaySettingsChanged += OnDisplayChanged;
@@ -231,7 +234,7 @@ public partial class MainWindow : Window, IShell
         Closing += OnWindowClosing;
         Application.Current.SessionEnding += (_, _) => _exiting = true;   // Windows kapanırken engelleme
         Nav.HideClicked += () => { if (_mode == Mode.Launcher && _overlay != OverlayMode.Busy) { HideOverlay(); HideLauncher(Mode.Away); } };
-        Nav.ExitClicked += () => Confirm("KLYC Konsol kapatılsın mı?", ExitApp);
+        Nav.ExitClicked += () => Confirm("KLYC Konsol kapatılsın mı?", UserQuit);
         _pad.ConnectionChanged += OnPadConnectionChanged;
         SizeChanged += (_, _) => { };
 
@@ -651,15 +654,15 @@ public partial class MainWindow : Window, IShell
         }
     }
 
-    public void SendPulseCommand(string action, string? mode)
+    public void SendPulseCommand(string action, string? mode, string? value = null)
     {
         var feed = _latestPulse ?? PulseLink.ReadFeed();
         if (!PulseLink.IsAlive(feed)) { Toast("Pulse çalışmıyor"); return; }
         if (feed is not { AcceptsCommands: true }) { Toast("Pulse'ta komuta izin kapalı: Pulse → Ayarlar → \"Konsol'dan mod değiştirmeye izin ver\""); return; }
-        var id = PulseLink.SendCommand(action, mode);
+        var id = PulseLink.SendCommand(action, mode, value: value);
         if (id == null) { Toast("Komut Pulse'a yazılamadı"); return; }
         _cmdTracker.Track(id, DateTimeOffset.UtcNow.ToUnixTimeSeconds());
-        AppLog.Write("pulse", $"komut gönderildi: {action} {mode}");
+        AppLog.Write("pulse", $"komut gönderildi: {action} {mode} {value}");
         Toast("Pulse'a gönderildi…");
     }
 
@@ -1008,6 +1011,7 @@ public partial class MainWindow : Window, IShell
     {
         _mouse.Reset();
         _mouse.BIsRightClick = true;
+        try { if (ShellMode.IsEnabled()) ShellMode.EnsureExplorer(); } catch { }   // Konsol modunda masaüstü (görev çubuğu) yoksa başlat
         _pad.StickNavigation = false;
         HideLauncher(Mode.Desktop);
         _desktopHint.Show();

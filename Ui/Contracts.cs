@@ -25,7 +25,7 @@ public interface IShell
     /// <summary>Pulse'ın son özeti (Pulse yoksa null); üst çubuk birkaç saniyede bir yeniler.</summary>
     PulseFeed? LatestPulse { get; }
     /// <summary>Pulse'a mod/Hızlandır komutu gönderir ("mode" + mod anahtarı ya da "boost"); Pulse izin vermediyse nedenini bildirir.</summary>
-    void SendPulseCommand(string action, string? mode);
+    void SendPulseCommand(string action, string? mode, string? value = null);
     /// <summary>"Üst çubukta Pulse bilgisi" ayarı değişince uygular.</summary>
     void ApplyPulseInfoSetting();
 

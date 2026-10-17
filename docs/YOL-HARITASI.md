@@ -37,13 +37,13 @@ Efor: **S** küçük (bir oturum) · **M** orta · **L** büyük. Durum: ⏳ sı
 | 13 | Kütüphane: son oynananlar, sıralama, yeni kurulumu algılama | ✅ 1.0.0 (koleksiyon, başarım/ekran görüntüsü yok) |
 | 14 | Tarayıcı: indirme yönetimi, YouTube için TV modu | ✅ 1.0.0 (reklam engelleme, şifre yöneticisi yok) |
 | 15 | Sistem: ses çıkışı değiştirme, çözünürlük/yenileme hızı, pil uyarısı | ✅ 1.0.0 (zamanlı kapatma yok) |
-| 16 | **Konsol modu**: Windows kabuğu olarak (bilgisayar açılınca doğrudan Konsol) | ⛔ **bilerek yapılmadı** — bkz. aşağı. Bunun yerine: "Windows ile başlat" (`--startup`) + kol yokken gizli bekle |
+| 16 | **Konsol modu**: bilgisayar açılınca Windows kabuğu yerine doğrudan Konsol | ✅ 1.1.0 (isteğe bağlı, varsayılan KAPALI; kullanıcı açıkça istedi). Çok katmanlı geri dönüş ve geri alma yolları var (README). **Gerçek oturum açılışında denenmedi** |
 | 17 | Çoklu dil (İngilizce) | ✅ 1.0.0 (açık tema, büyük yazı/erişilebilirlik yok) |
 | 18 | Uzaktan oynatma (Sunshine/Moonlight) uyumu | ⏳ (kullanıcı "7 kalsın" dedi → ertelendi) |
 
-### Neden Windows kabuğu olarak değil? (#16)
+### Konsol modu (#16): neden önce ertelendi, nasıl yapıldı
 
-Windows kabuğunu (`explorer.exe`) Konsol ile değiştirmek, Konsol bir hata yaptığında ya da kol yokken masaüstü, görev çubuğu, Win+R, Görev Yöneticisi'ne giden olağan yolları ortadan kaldırır; hata bilgisayarı kullanılmaz bırakabilir (özellikle klavye/fare ile kurtarma gerekince). Kullanıcının asıl amacı — açılışta doğrudan kol arayüzü, istendiğinde masaüstü — **kabuk değiştirmeden** karşılanıyor: Konsol açılışta tam ekran gelir (kol takılıysa), Guide / Ctrl+Alt+K / ⏻ ile masaüstüne iner, kol yoksa ekranı örtmez. Kabuk değişikliği kullanıcıdan açıkça istenir ve geri alma yolu (Güvenli Mod'da çalışmama, tek tuşla `explorer.exe`'ye dönüş) tasarlanmadan yapılmaz.
+Windows kabuğunu Konsol ile değiştirmek, hata olursa bilgisayarı kullanılmaz bırakabilir; bu yüzden 1.0.0'da bilerek yapılmadı. Kullanıcı açıkça istedi ("PC'yi PlayStation gibi kullanmak") ve 1.1.0'da şu güvenceyle yapıldı: kabuk olarak doğrudan Konsol değil, **çıkmayan küçük bir gözetmen** (`KlycShell.exe`, C, ~135 KB) kayıtlıdır; o Konsol'u başlatır ve Safe Mode / SHIFT / `shell.off` / Konsol yok / çökme döngüsü durumlarında Windows masaüstünü (explorer.exe) açar. Yalnızca HKCU (tek kullanıcı), varsayılan KAPALI, tek tuşla geri alınır; son çare Görev Yöneticisi → explorer.exe. Kalan risk: gerçek oturum açılışında denenmedi; Winlogon'un tırnaklı yol + bağımsız değişkenli kabuk değerini kabul ettiği belgelenmiş davranış ama burada doğrulanmadı.
 
 ## E. Tanıtım
 

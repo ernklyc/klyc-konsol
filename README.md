@@ -102,10 +102,15 @@ Masaüstündeki `Game` gibi klasörlerdeki `.url` / `.lnk` kısayolları da otom
 
 ## PlayStation gibi kullanmak (açılır açılmaz Konsol)
 
-1. Konsol'u kur ve bir kez aç: "Windows ile başlat" kendiliğinden açılır (Ayarlar'dan kapatılabilir).
-2. **KLYC Pulse'ı da kur** ve Pulse → Ayarlar'dan "Windows ile başlat"ı aç (yönetici penceresi çıkarmadan görev zamanlayıcı ile açılır) ve **"Konsol'dan mod değiştirmeye izin ver"i aç**. Sonra kolla Konsol → Ayarlar → PULSE'tan modu seçer, Hızlandır'ı çalıştırırsın; üst çubukta mod ve ısı görünür.
-3. Şifre ekranını atlamak için Windows'ta otomatik oturum açmayı aç (bu bir Windows güvenlik ayarıdır, Konsol açmaz): önce Ayarlar → Hesaplar → Oturum açma seçenekleri → "Windows Hello gerektir"i kapat; sonra `Win+R` → `netplwiz` → "Kullanıcıların bu bilgisayarı kullanması için…" kutusunu kaldır → şifreni bir kez gir. (Bilgisayarı başkaları da kullanıyorsa ya da dizüstüyse güvenlik riskini düşün.)
-4. Kolu takılı tut ya da Bluetooth ile eşleştir: bilgisayar açılınca Konsol gelir; kolla oyun seç. Masaüstüne inmek için Guide / Ctrl+Alt+K ya da Ayarlar → Masaüstü Modu.
+Hedef: güç düğmesine bas → (şifre sormadan) doğrudan Konsol → kolla her şey, Pulse dahil → istediğinde Windows masaüstüne geç. Adımlar (hepsi Konsol → Ayarlar → SİSTEM'de):
+
+1. **Konsol modu (Windows masaüstü yerine):** açıkken oturum açılınca Windows masaüstü ve görev çubuğu yerine doğrudan Konsol gelir. Küçük bir gözetmen (`KlycShell.exe`) kabuk olarak kayıtlıdır; **sorunda kendiliğinden Windows masaüstüne döner**: Safe Mode, oturum açarken SHIFT basılıysa, Konsol dosyası yoksa, `%AppData%\KLYC-Konsol\shell.off` dosyası varsa ya da Konsol 2 dakikada 3 kez kapanırsa (çökme döngüsü). Konsol kapanırken (Konsol'dan çık) önce masaüstü açılır. Yalnızca senin kullanıcını etkiler.
+   - **Geri alma:** Ayarlar → Konsol modu → kapat. Konsol açılmazsa: `Ctrl+Alt+Del` → Görev Yöneticisi → "Yeni görev çalıştır" → `explorer.exe` (masaüstü gelir); sonra bir kez daha "Yeni görev" → `cmd /c reg delete "HKCU\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v Shell /f`.
+2. **Şifresiz otomatik oturum açma:** satıra basınca Windows'un hesap penceresi (`netplwiz`) açılır; "Kullanıcıların bu bilgisayarı kullanması için…" kutusunu kaldırıp şifreni **kendin** bir kez girersin (Windows güvenlik ayarı; Konsol şifre girmez). Önce Windows 11'de Ayarlar → Hesaplar → Oturum açma seçenekleri → "Windows Hello gerektir"i kapat. Bilgisayarı başkaları da kullanıyorsa ya da dizüstüyse güvenlik riskini düşün.
+3. **Yönetici olarak başlat (UAC'siz):** kolla yönetici onay penceresine cevap verilemez; Konsol yönetici yetkisiyle açılırsa başlattıkların da sormaz. Zamanlanmış görevle açılır; açıp kapatmak **bir kez klavye/fareyle** onay ister. Dikkat: tarayıcı ve oyunlar da yönetici yetkisiyle çalışır (varsayılan kapalı).
+4. **KLYC Pulse:** Pulse → Ayarlar'da "Windows ile başlat" ve "Konsol'dan mod değiştirmeye izin ver"i aç. Sonra Konsol → Ayarlar → PULSE'tan kolla mod seç, Hızlandır, Temizlik, "oyun açılınca otomatik mod", ısı hedefi ve fan desteği; üst çubukta mod ve ısı görünür.
+5. **Windows masaüstüne geç:** Ayarlar'daki satır (ya da Masaüstü Modu / Guide) masaüstünü ve görev çubuğunu açar, kol fare olur; Konsol'a dönmek için Guide ya da Ctrl+Alt+K. Oyun sırasında Konsol yine kapanıp bekçi kalır.
+6. "Windows ile başlat" ilk açılışta kendiliğinden açılır (1.0.1+); Konsol modu ise **senin onayınla** açılır.
 
 ## Oyun modu
 

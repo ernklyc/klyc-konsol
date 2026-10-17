@@ -19,7 +19,7 @@ public sealed record PulseModeInfo(string Key, string Title);
 public sealed record PulseCommandResult(string Id, string Action, bool Ok, string Message, long At);
 
 public sealed record PulseFeed(int Schema, long UpdatedAt, string? PulseVersion, bool Running, string? ModeKey, bool ModeApplying, bool AcceptsCommands, PulseReport? LastReport, bool AutoGameMode = false,
-    string? ModeTitle = null, List<PulseModeInfo>? Modes = null, PulseLive? Live = null, PulseCommandResult? LastCommand = null);
+    string? ModeTitle = null, List<PulseModeInfo>? Modes = null, PulseLive? Live = null, PulseCommandResult? LastCommand = null, int? HeatTarget = null);
 
 /// <summary>
 /// KLYC Pulse (kardeş proje) ile dosya tabanlı haberleşme: Pulse'ın `konsol-feed.json` özetini okur, Konsol kendi durumunu `status.json` (şema 2) olarak yazar.
@@ -79,7 +79,7 @@ public static class PulseLink
                 cmd = new PulseCommandResult(cid, Str(lc, "action") ?? "", Bool(lc, "ok"), Str(lc, "message") ?? "", Long(lc, "at") ?? 0);
             return new PulseFeed((int?)Long(r, "schema") ?? 1, Long(r, "updatedAt") ?? 0, Str(r, "pulseVersion"), Bool(r, "running"),
                 mode is { } me ? Str(me, "key") : null, mode is { } me2 && Bool(me2, "applying"), Bool(r, "acceptsCommands"), report, Bool(r, "autoGameMode"),
-                Str(r, "modeTitle"), modes, live, cmd);
+                Str(r, "modeTitle"), modes, live, cmd, (int?)Dbl(r, "heatTarget"));
         }
         catch (JsonException) { return null; }
     }
@@ -222,14 +222,14 @@ public static class PulseLink
     public static string CommandFile => Path.Combine(AppPaths.Dir, "pulse-command.json");
 
     /// <summary>Komut JSON'u (Pulse KonsolCommands.Parse'ın beklediği biçim): şema, kimlik (8-64 harf/rakam/-), eylem, mod, zaman.</summary>
-    public static string BuildCommand(string id, string action, string? mode, long now) =>
-        JsonSerializer.Serialize(new { schema = 1, id, action, mode, at = now }, new JsonSerializerOptions { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });
+    public static string BuildCommand(string id, string action, string? mode, long now, string? value = null) =>
+        JsonSerializer.Serialize(new { schema = 1, id, action, mode, value, at = now }, new JsonSerializerOptions { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });
 
     /// <summary>Komutu yazar ve kimliğini döner (başarısızsa null). Yalnızca Pulse bunu kabul ettiğini bildirmişse çağrılır.</summary>
-    public static string? SendCommand(string action, string? mode, long? now = null, string? path = null)
+    public static string? SendCommand(string action, string? mode, long? now = null, string? path = null, string? value = null)
     {
         var id = "k" + Guid.NewGuid().ToString("N")[..15];
-        var json = BuildCommand(id, action, mode, now ?? DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+        var json = BuildCommand(id, action, mode, now ?? DateTimeOffset.UtcNow.ToUnixTimeSeconds(), value);
         return WriteAtomic(path ?? CommandFile, json) ? id : null;
     }
 

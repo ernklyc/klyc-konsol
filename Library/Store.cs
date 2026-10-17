@@ -123,6 +123,8 @@ public sealed class AppState
     public string Language { get; set; } = "auto";
     /// <summary>İlk açılışta "Windows ile başlat" kendiliğinden açıldı mı (bir kez yapılır; kullanıcı sonradan kapatırsa yeniden açılmaz).</summary>
     public bool AutostartInitialized { get; set; }
+    /// <summary>Konsol modu açılırken yedeklenen önceki Windows kabuk değeri ("" = yoktu, varsayılan explorer.exe); kapatınca geri yazılır.</summary>
+    public string? ShellBackup { get; set; }
     /// <summary>Kütüphane sıralaması: "smart" (varsayılan), "recent", "name", "playtime".</summary>
     public string LibrarySort { get; set; } = "smart";
     /// <summary>Üst çubukta Pulse modu / ısı bilgisini göster (Pulse çalışıyorsa). Kapatılırsa Pulse sensör okumaz.</summary>

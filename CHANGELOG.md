@@ -2,6 +2,18 @@
 
 Biçim [Keep a Changelog](https://keepachangelog.com/tr/) esaslıdır; sürümleme [SemVer](https://semver.org/lang/tr/).
 
+## [1.1.0] — 2026-10-18
+
+### Eklenenler
+- **Konsol modu (Windows masaüstü yerine):** oturum açılınca Windows masaüstü ve görev çubuğu yerine doğrudan Konsol gelir. Küçük bir C gözetmeni (`KlycShell.exe`, 135 KB) kabuk olarak kaydedilir; Konsol'u başlatır, kapanırsa yeniden başlatır ve **her sorunda Windows masaüstüne döner** (Safe Mode, SHIFT basılı oturum açma, Konsol yok, `shell.off` dosyası, çökme döngüsü). Kapatınca önceki kabuk değeri geri yazılır. Varsayılan KAPALI, açmak onay ister. Gözetmen mantığı SAHTE Konsol/masaüstüyle gerçek süreçlerde 13 denetimle sınandı; gerçek Windows oturum açılışında denenmedi.
+- **Windows masaüstüne geç**, **şifresiz otomatik oturum açma** (Windows'un `netplwiz` penceresini açar; şifreyi Konsol girmez) ve **Yönetici olarak başlat (UAC'siz)** (zamanlanmış görev; varsayılan KAPALI) satırları.
+- **Pulse'u kolla tam yönet:** Ayarlar → PULSE'ta mod, Hızlandır, **Temizlik**, **oyun açılınca otomatik mod**, **ısı hedefi** (Kapalı/75/80/85/90 °C) ve **fan desteği** (Pulse ≥ 1.12.0; izin açıksa). Gerçek Konsol + gerçek Pulse ile uçtan uca denendi (otomatik mod açılıp kapandı, ayar dosyasına yazıldı).
+- Konsol'dan çıkarken (Konsol modundaysa) önce Windows masaüstü açılır.
+
+### Değişenler
+- Ayarlar'da satır sayısı arttı (SİSTEM: +4, PULSE: +4).
+- 268 birim test (Konsol modu mantığı sahte kayıt defteriyle; gerçek Windows kaydına dokunulmaz).
+
 ## [1.0.1] — 2026-10-17
 
 ### Değişenler

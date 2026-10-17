@@ -88,7 +88,7 @@ function Run-Pass($lang, $expect) {
         Send-Cmd $sb 'tab:2'
         $names = Get-Names $proc
         Check "Ayarlar açıldı: başlık ve temel satırlar" (($names -contains $expect.Settings) -and ($names -contains $expect.RowDisplay) -and ($names -contains $expect.RowLanguage)) (($names | Select-Object -First 25) -join '|')
-        Check "Ayarlar'da Pulse bölümü var" (($names -contains 'PULSE') -and ($names -contains $expect.RowPulseMode))
+        Check "Ayarlar'da Pulse bölümü (mod, ısı hedefi, fan, temizlik) ve Konsol modu satırları var" (($names -contains 'PULSE') -and ($names -contains $expect.RowPulseMode) -and ($names -contains $expect.RowHeat) -and ($names -contains $expect.RowShell) -and ($names -contains $expect.RowElevated))
         Save-Shot "smoke_${lang}_settings"
 
         # Ekran ve ses paneli: 10 aşağı → A (yalnızca paneli açar, hiçbir şeyi değiştirmez); sonra B ile kapat
@@ -129,8 +129,8 @@ function Run-Pass($lang, $expect) {
 }
 
 # Kullanıcının bekçisi (varsa) test sırasında durmuş olabilir; CI'da yoktur. Burada hiçbir şey durdurulmaz/başlatılmaz.
-Run-Pass 'tr' @{ Library = 'Kütüphane'; Browser = 'Tarayıcı'; Settings = 'Ayarlar'; Recent = 'Son oynananlar'; RowDisplay = 'Ekran ve ses'; RowLanguage = 'Dil / Language'; RowPulseMode = 'Pulse modu'; PanelDisplay = 'EKRAN'; PanelSound = 'SES ÇIKIŞI' }
-Run-Pass 'en' @{ Library = 'Library'; Browser = 'Browser'; Settings = 'Settings'; Recent = 'Recent'; RowDisplay = 'Display and sound'; RowLanguage = 'Dil / Language'; RowPulseMode = 'Pulse mode'; PanelDisplay = 'DISPLAY'; PanelSound = 'SOUND OUTPUT' }
+Run-Pass 'tr' @{ Library = 'Kütüphane'; Browser = 'Tarayıcı'; Settings = 'Ayarlar'; Recent = 'Son oynananlar'; RowDisplay = 'Ekran ve ses'; RowLanguage = 'Dil / Language'; RowPulseMode = 'Pulse modu'; RowHeat = 'Isı hedefi'; RowShell = 'Konsol modu (Windows masaüstü yerine)'; RowElevated = 'Yönetici olarak başlat (UAC''siz)'; PanelDisplay = 'EKRAN'; PanelSound = 'SES ÇIKIŞI' }
+Run-Pass 'en' @{ Library = 'Library'; Browser = 'Browser'; Settings = 'Settings'; Recent = 'Recent'; RowDisplay = 'Display and sound'; RowLanguage = 'Dil / Language'; RowPulseMode = 'Pulse mode'; RowHeat = 'Heat target'; RowShell = 'Konsol mode (instead of the Windows desktop)'; RowElevated = 'Start as administrator (no UAC prompts)'; PanelDisplay = 'DISPLAY'; PanelSound = 'SOUND OUTPUT' }
 
 "SONUÇ: $ok geçti, $fail kaldı"
 if ($fail -gt 0) { exit 1 }

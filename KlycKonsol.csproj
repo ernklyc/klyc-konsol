@@ -10,7 +10,7 @@
     <RootNamespace>KlycKonsol</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\klyc.ico</ApplicationIcon>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
     <StartupObject>KlycKonsol.Program</StartupObject>
     <!-- Düşük kaynak: eşzamanlı (arka plan) GC iş parçacığı ve PGO enstrümantasyonu yok; yalnızca İngilizce satellite -->
     <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
@@ -31,6 +31,8 @@
   <ItemGroup>
     <!-- Oyun sırasında Konsol'un yerini alan küçük bekçi (kaynak: Guard\KlycGuard.c; derleme: Guard/uild.ps1) -->
     <None Include="Guard\KlycGuard.exe" Link="KlycGuard.exe" CopyToOutputDirectory="PreserveNewest" Condition="Exists('Guard\KlycGuard.exe')" />
+    <!-- Konsol modu: Windows kabuğu yerine geçen gözetmen (kaynak: Guard\KlycShell.c; derleme: Guard/build-shell.ps1) -->
+    <None Include="Guard\KlycShell.exe" Link="KlycShell.exe" CopyToOutputDirectory="PreserveNewest" Condition="Exists('Guard\KlycShell.exe')" />
     <EmbeddedResource Include="Localization\en.tsv" />
     <Resource Include="Assets\klyc.ico" />
     <Resource Include="Assets\logo.png" />

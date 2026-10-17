@@ -466,3 +466,37 @@ Mod uygulanıyor…	Applying mode…
 {0} modu	{0} mode
 İşlemci {0}°	CPU {0}°
 Ekran kartı {0}°	GPU {0}°
+Temizlik	Cleanup
+Pulse'un zararsız geçici dosya temizliğini çalıştırır (belgelerine, oyunlarına, indirilenlerine dokunmaz)	Runs Pulse's harmless temporary-file cleanup (does not touch your documents, games or downloads)
+Oyun açılınca otomatik mod	Automatic mode when a game starts
+A ile aç/kapat: oyun açılınca Pulse modu kendiliğinden Oyun'a alır, oyun bitince geri döner	A toggles: when a game starts Pulse switches to Game mode by itself and returns afterwards
+Isı hedefi	Heat target
+◀ ▶ ile seç, A ile uygula: işlemci/ekran kartı bu sıcaklığı geçerse Pulse hızı küçük adımlarla kısar (Kapalı · 75 · 80 · 85 · 90 °C)	Pick with ◀ ▶, apply with A: if the CPU/GPU goes above this temperature Pulse lowers the speed in small steps (Off · 75 · 80 · 85 · 90 °C)
+Fan desteği	Fan assist
+◀ kapat · ▶ aç: bilgisayar destekliyorsa Pulse fanı hızlandırır	◀ off · ▶ on: if your computer supports it Pulse speeds up the fan
+◀ ▶	◀ ▶
+{0} °C	{0} °C
+Açılamadı: {0}	Could not open: {0}
+Kapatılamadı: {0}	Could not turn off: {0}
+Gözetmen kopyalanamadı.	The watchdog could not be copied.
+KlycShell.exe bulunamadı (kurulum eksik).	KlycShell.exe was not found (incomplete installation).
+Konsol dosyası bulunamadı.	The Konsol file was not found.
+Konsol modu açıldı: bir sonraki oturum açışında Windows masaüstü yerine Konsol gelir.	Konsol mode is on: at the next sign-in Konsol appears instead of the Windows desktop.
+Konsol modu kapatıldı: bir sonraki oturum açışında Windows masaüstü gelir.	Konsol mode is off: the Windows desktop appears at the next sign-in.
+Konsol modu (Windows masaüstü yerine)	Konsol mode (instead of the Windows desktop)
+Bilgisayar açılınca (oturum açılınca) Windows masaüstü yerine doğrudan Konsol gelir — konsol gibi. Sorun olursa kendiliğinden masaüstüne döner; istediğinde buradan kapatırsın	When the computer starts (at sign-in) Konsol appears instead of the Windows desktop — like a console. If anything goes wrong it falls back to the desktop by itself; you can turn it off here
+Konsol modu açılsın mı? Bilgisayar açılınca Windows masaüstü yerine doğrudan Konsol gelir. Sorun olursa ya da Safe Mode'da kendiliğinden masaüstüne döner; istediğinde buradan kapatırsın.	Turn on Konsol mode? When the computer starts Konsol appears instead of the Windows desktop. If anything goes wrong, or in Safe Mode, it falls back to the desktop by itself; you can turn it off here any time.
+Konsol modu kapatılsın mı? Bir sonraki oturum açışında Windows masaüstü gelir.	Turn off Konsol mode? The Windows desktop will appear at the next sign-in.
+Windows masaüstüne geç	Switch to the Windows desktop
+Masaüstünü ve görev çubuğunu açar, kol fare olur (Konsol'a dönmek: Guide ya da Ctrl+Alt+K)	Opens the desktop and taskbar and the controller becomes a mouse (back to Konsol: Guide or Ctrl+Alt+K)
+Şifresiz otomatik oturum açma	Automatic sign-in without a password
+Windows'un hesap penceresini açar: "Kullanıcıların bu bilgisayarı kullanması için..." kutusunu kaldırıp şifreni bir kez girersin. Windows güvenlik ayarıdır, Konsol şifre girmez	Opens the Windows accounts window: untick "Users must enter a user name and password..." and type your password once. This is a Windows security setting; Konsol never types a password
+Windows'un hesap penceresi açılacak (kol fare olur). Şifre ekranını atlamak için "Kullanıcıların bu bilgisayarı kullanması için..." kutusunu kaldır. Devam?	The Windows accounts window will open (the controller becomes a mouse). To skip the password screen untick "Users must enter a user name and password...". Continue?
+Yönetici olarak başlat (UAC'siz)	Start as administrator (no UAC prompts)
+Kolla yönetici onay penceresine cevap verilemez; Konsol yönetici yetkisiyle açılırsa başlattıkların da sormaz. Dikkat: tarayıcı ve oyunlar da yönetici yetkisiyle çalışır. Açıp kapatmak bir kez klavye/fareyle onay ister	A controller cannot answer the administrator prompt; if Konsol runs as administrator the things it starts do not ask either. Note: the browser and games also run with administrator rights. Turning it on/off needs a one-time approval with keyboard/mouse
+Konsol yönetici yetkisiyle başlatılsın mı? Yönetici onayı penceresi çıkacak (klavye/fare gerekir). Tarayıcı ve oyunlar da yönetici yetkisiyle çalışır.	Start Konsol as administrator? An administrator approval prompt will appear (keyboard/mouse needed). The browser and games also run with administrator rights.
+Yönetici olarak başlatma kapatılsın mı? (Yönetici onayı penceresi çıkar; klavye/fare gerekir)	Turn off starting as administrator? (An approval prompt appears; keyboard/mouse needed)
+Yönetici onayı bekleniyor…	Waiting for administrator approval…
+Yapılamadı (onay verilmedi ya da engellendi)	Could not do it (not approved or blocked)
+Yönetici olarak başlatma kapatıldı	Starting as administrator is turned off
+Konsol bir sonraki oturum açışında yönetici yetkisiyle açılır	Konsol will start with administrator rights at the next sign-in
