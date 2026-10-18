@@ -551,3 +551,4 @@ Aday yok (bir oyun oynayınca öneri çıkar)	No candidates (suggestions appear 
 {0} · kapatılacak	{0} · will be closed
 {0} · kapatılmayacak	{0} · will not be closed
 Henüz öneri yok: bir oyun oynayınca Pulse arka planda en çok yoran programları listeler	No suggestions yet: after a game, Pulse lists the programs that used the most background CPU
+{0} başlamadı ya da hemen kapandı. Steam / EA / Epic uygulamasını açıp oyunu oradan bir kez başlatmayı dene (giriş ya da güncelleme gerekebilir).	{0} did not start or closed right away. Open the Steam / EA / Epic app and start the game from there once (a sign-in or update may be needed).

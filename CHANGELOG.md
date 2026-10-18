@@ -2,6 +2,11 @@
 
 Biçim [Keep a Changelog](https://keepachangelog.com/tr/) esaslıdır; sürümleme [SemVer](https://semver.org/lang/tr/).
 
+## [1.3.1] — 2026-10-18
+
+### Düzeltilenler
+- **Oyun hiç başlamazsa Konsol artık boşlukta bırakmıyor:** bekçi oyun sürecini 150 sn içinde görmezse (ör. Steam'den başlatılan EA oyunu: EA uygulaması açılıp kapanıp oyun hiç açılmadı) Konsol "oyun başlamadı ya da hemen kapandı; mağaza uygulamasından bir kez başlatmayı dene" bildirimiyle geri açılıyor. Eskiden bekçi 3 dk sonra sessizce izlemeyi bırakıyor, Konsol kapalı kalıyor, kullanıcı yalnızca Guide ile dönebiliyordu. Gerçek EA SPORTS FC 25 denemesinde görüldü: oyun Konsol'dan değil doğrudan Steam'den başlatılınca da açılmıyordu (EA uygulaması sorunu), bu yüzden bekçi tarafı düzeltildi.
+
 ## [1.3.0] — 2026-10-18
 
 ### Eklenenler

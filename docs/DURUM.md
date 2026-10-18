@@ -1,6 +1,6 @@
 # Proje durumu
 
-**Güncel sürüm: 1.3.0** (GitHub Releases'te, 288 birim testi + gerçek pencereyle arayüz testleri). Son güncelleme: 2026-10-18.
+**Güncel sürüm: 1.3.1** (GitHub Releases'te, 288 birim testi + gerçek pencereyle arayüz testleri). Son güncelleme: 2026-10-18.
 Bu belge "ne var, ne kadar doğrulandı" sorusunun tek kaynağıdır. Her değişiklikten sonra güncelle.
 
 Doğrulama düzeyleri: **✔ gerçek** = kullanıcının bilgisayarında gerçek veriyle/donanımla görüldü · **◐ sahte** = sahte oyun/sanal tuşla otomatik denendi ·

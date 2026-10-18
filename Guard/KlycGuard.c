@@ -34,6 +34,7 @@ typedef DWORD (WINAPI *XGetStateEx)(DWORD, XSTATE *);
 static wchar_t g_konsol[MAX_PATH * 2], g_dir[MAX_PATH * 2], g_game[256], g_testFile[MAX_PATH * 2], g_testShot[MAX_PATH * 2];
 static long long g_started, g_firstSeen;
 static int g_autoReturn = 1;
+static ULONGLONG g_startTimeoutMs = 150000ULL;   /* oyun sürecinin görünmesi için en çok bu kadar bekle; görünmezse Konsol geri açılır (--start-timeout <sn>) */
 static HWND g_wnd;
 static HANDLE g_stop;
 static HICON g_icon;
@@ -230,7 +231,12 @@ static void WatchStep(void)
     int alive = found ? AliveCount() : 0;
     if (alive > 0) g_lastAliveUnix = NowUnix();
 
-    if (!found && now - g_startedTick > 180000ULL) { g_watching = FALSE; return; }   /* hiç görünmedi: izlemeyi bırak */
+    if (!found && now - g_startedTick > g_startTimeoutMs)
+    {
+        /* Oyun hiç başlamadı (ör. mağaza uygulaması açılıp kapandı): kullanıcı boşlukta kalmasın, Konsol "oyun başlamadı" bilgisiyle geri açılır */
+        if (g_game[0]) { FinishAndQuit(); return; }
+        g_watching = FALSE; return;
+    }
     if (found && alive == 0 && now - g_lastNewTick > GraceMs()) { FinishAndQuit(); return; }
     if (found && now - g_lastNewTick > 25000ULL) g_settledWait = TRUE;
 }
@@ -313,6 +319,7 @@ static void ParseArgs(void)
         else if (!wcscmp(a, L"--firstseen")) { g_firstSeen = _wtoi64(v); i++; }
         else if (!wcscmp(a, L"--autoreturn")) { g_autoReturn = _wtoi(v) != 0; i++; }
         else if (!wcscmp(a, L"--test-guide")) { StringCchCopyW(g_testFile, MAX_PATH * 2, v); i++; }
+        else if (!wcscmp(a, L"--start-timeout")) { g_startTimeoutMs = (ULONGLONG)_wtoi(v) * 1000ULL; i++; }
         else if (!wcscmp(a, L"--test-shot")) { StringCchCopyW(g_testShot, MAX_PATH * 2, v); i++; }
     }
     LocalFree(argv);

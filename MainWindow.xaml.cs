@@ -82,6 +82,12 @@ public partial class MainWindow : Window, IShell
             if (g != null)
             {
                 var played = TimeSpan.FromSeconds(_guardArgs.PlayedSeconds);
+                if (_guardArgs.PlayedSeconds == 0)
+                {
+                    // Bekçi oyun sürecini hiç görmedi (ör. Steam/EA uygulaması açılıp kapandı): kullanıcı boşlukta kalmasın, ne olduğunu söyle
+                    Toast($"{g.Title} başlamadı ya da hemen kapandı. Steam / EA / Epic uygulamasını açıp oyunu oradan bir kez başlatmayı dene (giriş ya da güncelleme gerekebilir).");
+                    return;
+                }
                 RecordPlayTime(g, played);
                 // Bekçiyle başlayan oyunlarda (varsayılan yol) oyun bitince Konsol yeniden açılır; özet paneli ve Pulse raporu burada gösterilir
                 if (played >= SummaryMinPlayed) { ShowSessionSummary(g, played); _ = PulseReportAsync(g, played); }
