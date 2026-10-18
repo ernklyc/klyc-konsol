@@ -1000,6 +1000,17 @@ public partial class MainWindow : Window, IShell
     }
     string _summaryBase = "";
 
+    public void ShowInfo(string title, string body)
+    {
+        if (_overlay != OverlayMode.None) return;
+        _summaryGame = null;
+        ShowOverlay(OverlayMode.Summary, title, "A  Tamam");
+        OverlayCover.Visibility = Visibility.Collapsed;
+        OverlayBody.Text = Loc.Translate(body);
+        OverlayBody.Foreground = (Brush)FindResource("Text");
+        OverlayBody.Visibility = Visibility.Visible;
+    }
+
     /// <summary>
     /// Windows açılışında: kol takılıysa arayüz açık kalır; birkaç saniye içinde kol görünmezse Konsol arka plana çekilir
     /// (bekçi devralır: Guide / Ctrl+Alt+K / simge ile açılır). Fare/klavyeyle açılan bilgisayarın üstünü örtmez.
@@ -1040,7 +1051,7 @@ public partial class MainWindow : Window, IShell
                     AppLog.Write("rapor", $"{game.Title}: Pulse raporu geldi ({r.Minutes:0} dk, önem {r.Severity})");
                     if (_overlay == OverlayMode.Summary && _summaryGame == game)
                     {
-                        OverlayBody.Text = _summaryBase + "\n\n" + PulseLink.Summarize(r);
+                        OverlayBody.Text = _summaryBase + "\n\n" + PulseLink.Summarize(r, 4);
                         OverlayBody.Foreground = r.Severity switch
                         {
                             >= 2 => new SolidColorBrush(Color.FromRgb(0xF0, 0x6A, 0x6A)),

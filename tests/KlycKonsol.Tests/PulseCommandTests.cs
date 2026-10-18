@@ -225,4 +225,24 @@ public class PulseCommandValueTests
         Assert.Equal("sessiz", d.RootElement.GetProperty("mode").GetString());
         Assert.Equal("Hades II", d.RootElement.GetProperty("value").GetString());
     }
+
+    // ---- Sistem denetimi ----
+
+    [Fact]
+    public void Feed_ParsesAudit_AndAuditTextOrdersAttentionFirst()
+    {
+        var f = PulseLink.ParseFeed(Feed(",\"audit\":[{\"id\":\"vbs\",\"severity\":0,\"title\":\"VBS açık\",\"detail\":\"bilgi\"},{\"id\":\"vram\",\"severity\":1,\"title\":\"VRAM doluyor\",\"detail\":\"FC25\"},{\"id\":\"x\"}]"))!;
+        Assert.Equal(2, f.Audit!.Count);
+        var text = PulseLink.AuditText(f);
+        Assert.True(text.IndexOf("VRAM doluyor") < text.IndexOf("VBS açık"));
+        Assert.Contains("FC25", text);
+    }
+
+    [Fact]
+    public void AuditText_HandlesMissingAndEmpty()
+    {
+        Assert.Contains("henüz gelmedi", PulseLink.AuditText(PulseLink.ParseFeed(Feed())));
+        Assert.Contains("Dikkat edilecek bir şey bulunmadı", PulseLink.AuditText(PulseLink.ParseFeed(Feed(",\"audit\":[]"))));
+        Assert.Null(PulseLink.ParseFeed(Feed())!.Audit);
+    }
 }

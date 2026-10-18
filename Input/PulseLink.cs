@@ -21,8 +21,11 @@ public sealed record PulseCommandResult(string Id, string Action, bool Ok, strin
 /// <summary>Pulse'ın bildiği oyun profili: Mode = mod anahtarı, Enabled=false ise o oyunda otomatik geçiş kapalı.</summary>
 public sealed record PulseGameProfile(string Name, string Mode, bool Enabled);
 
+/// <summary>Pulse sistem denetimi bulgusu. Severity: 0 bilgi, 1 dikkat.</summary>
+public sealed record PulseAuditItem(string Id, int Severity, string Title, string Detail);
+
 public sealed record PulseFeed(int Schema, long UpdatedAt, string? PulseVersion, bool Running, string? ModeKey, bool ModeApplying, bool AcceptsCommands, PulseReport? LastReport, bool AutoGameMode = false,
-    string? ModeTitle = null, List<PulseModeInfo>? Modes = null, PulseLive? Live = null, PulseCommandResult? LastCommand = null, int? HeatTarget = null, List<PulseGameProfile>? GameProfiles = null);
+    string? ModeTitle = null, List<PulseModeInfo>? Modes = null, PulseLive? Live = null, PulseCommandResult? LastCommand = null, int? HeatTarget = null, List<PulseGameProfile>? GameProfiles = null, List<PulseAuditItem>? Audit = null);
 
 /// <summary>
 /// KLYC Pulse (kardeş proje) ile dosya tabanlı haberleşme: Pulse'ın `konsol-feed.json` özetini okur, Konsol kendi durumunu `status.json` (şema 2) olarak yazar.
@@ -84,9 +87,13 @@ public static class PulseLink
             if (r.TryGetProperty("gameProfiles", out var gp) && gp.ValueKind == JsonValueKind.Array)
                 profiles = gp.EnumerateArray().Where(x => x.ValueKind == JsonValueKind.Object && Str(x, "name") is { Length: > 0 })
                     .Select(x => new PulseGameProfile(Str(x, "name")!, Str(x, "mode") ?? "", !x.TryGetProperty("enabled", out _) || Bool(x, "enabled"))).ToList();
+            List<PulseAuditItem>? audit = null;
+            if (r.TryGetProperty("audit", out var au) && au.ValueKind == JsonValueKind.Array)
+                audit = au.EnumerateArray().Where(x => x.ValueKind == JsonValueKind.Object && Str(x, "title") is { Length: > 0 })
+                    .Select(x => new PulseAuditItem(Str(x, "id") ?? "", (int?)Dbl(x, "severity") ?? 0, Str(x, "title")!, Str(x, "detail") ?? "")).ToList();
             return new PulseFeed((int?)Long(r, "schema") ?? 1, Long(r, "updatedAt") ?? 0, Str(r, "pulseVersion"), Bool(r, "running"),
                 mode is { } me ? Str(me, "key") : null, mode is { } me2 && Bool(me2, "applying"), Bool(r, "acceptsCommands"), report, Bool(r, "autoGameMode"),
-                Str(r, "modeTitle"), modes, live, cmd, (int?)Dbl(r, "heatTarget"), profiles);
+                Str(r, "modeTitle"), modes, live, cmd, (int?)Dbl(r, "heatTarget"), profiles, audit);
         }
         catch (JsonException) { return null; }
     }
@@ -161,6 +168,14 @@ public static class PulseLink
             ?? list.FirstOrDefault(p => dir.Length > 0 && Normalize(p.Name) is { Length: >= 4 } n && dir.Contains(n, StringComparison.Ordinal));
     }
 
+    /// <summary>Denetim bulgularını okunur metne çevirir (önce dikkat edilecekler). Bulgu yoksa olumlu cümle.</summary>
+    public static string AuditText(PulseFeed? feed)
+    {
+        if (feed?.Audit is not { } list) return Loc.T("Pulse sistem denetimi sonucu henüz gelmedi. Biraz sonra yeniden aç.");
+        if (list.Count == 0) return Loc.T("Dikkat edilecek bir şey bulunmadı: sayfa dosyası, ekran kartı belleği, ısı ve arka plan yükü uygun görünüyor.");
+        return string.Join("\n\n", list.OrderByDescending(a => a.Severity).Select(a => (a.Severity > 0 ? "• " : "· ") + a.Title + "\n" + a.Detail));
+    }
+
     public static string ModeName(string? key) => key switch
     {
         "oyun" => "Oyun", "gunluk" => "Günlük", "sessiz" => "Sessiz", "bosta" => "Boşta", _ => key ?? "",
@@ -206,14 +221,14 @@ public static class PulseLink
     }
 
     /// <summary>Oyun detayında gösterilecek tek satır özet.</summary>
-    public static string Summarize(PulseReport r)
+    public static string Summarize(PulseReport r, int maxFindings = 2)
     {
         var parts = new List<string> { $"{r.Minutes:0} {Loc.T("dk")}" };
         if (r.AvgFps is { } fps) parts.Add($"ort. {fps:0} FPS");
         if (r.CpuTempMax is { } c) parts.Add($"işlemci en çok {c:0} °C");
         if (r.GpuTempMax is { } g) parts.Add($"ekran kartı {g} °C");
         var line = "Pulse raporu · " + string.Join(" · ", parts);
-        return r.Findings.Count > 0 ? line + "\n" + string.Join("\n", r.Findings.Take(2).Select(f => "• " + f)) : line;
+        return r.Findings.Count > 0 ? line + "\n" + string.Join("\n", r.Findings.Take(maxFindings).Select(f => "• " + f)) : line;
     }
 
     // ---- Konsol durumunu yazma (şema 2) -------------------------------------

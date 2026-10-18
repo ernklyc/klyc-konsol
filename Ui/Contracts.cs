@@ -40,6 +40,8 @@ public interface IShell
     /// <summary>Konsol'u tamamen kapatır (oyun güç planı / bildirim ayarları geri yüklenir).</summary>
     void Exit();
     void Confirm(string question, Action onYes);
+    /// <summary>Tam ekran bilgi paneli (başlık + gövde); A / B ile kapanır.</summary>
+    void ShowInfo(string title, string body);
     void Toast(string text);
     void ShowCursor(bool visible);
     /// <summary>Tam ekran video gibi durumlarda üst çubuk ve sayfaları gizler.</summary>

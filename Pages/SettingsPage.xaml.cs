@@ -46,7 +46,7 @@ public partial class SettingsPage : UserControl, IPage
     readonly IShell _shell;
     readonly ObservableCollection<SettingItem> _items = new();
     int _index;
-    SettingItem _volume = null!, _autostart = null!, _startupPad = null!, _gameBar = null!, _padOnly = null!, _partial = null!, _hidden = null!, _folders = null!, _autoReturn = null!, _powerPlan = null!, _muteToasts = null!, _sounds = null!, _haptics = null!, _language = null!, _guard = null!, _sort = null!, _pulseInfo = null!, _pulseMode = null!, _pulseBoost = null!, _pulseClean = null!, _pulseAuto = null!, _pulseHeat = null!, _pulseFan = null!, _shellMode = null!, _desktopWin = null!, _autoLogin = null!, _elevated = null!;
+    SettingItem _volume = null!, _autostart = null!, _startupPad = null!, _gameBar = null!, _padOnly = null!, _partial = null!, _hidden = null!, _folders = null!, _autoReturn = null!, _powerPlan = null!, _muteToasts = null!, _sounds = null!, _haptics = null!, _language = null!, _guard = null!, _sort = null!, _pulseInfo = null!, _pulseAudit = null!, _pulseMode = null!, _pulseBoost = null!, _pulseClean = null!, _pulseAuto = null!, _pulseHeat = null!, _pulseFan = null!, _shellMode = null!, _desktopWin = null!, _autoLogin = null!, _elevated = null!;
     readonly ControllerPanel _panel;
     readonly WifiPanel _wifi;
     readonly AboutPanel _about;
@@ -174,6 +174,12 @@ public partial class SettingsPage : UserControl, IPage
             Title = "Isı hedefi", Glyph = "",
             Caption = "◀ ▶ ile seç, A ile uygula: işlemci/ekran kartı bu sıcaklığı geçerse Pulse hızı küçük adımlarla kısar (Kapalı · 75 · 80 · 85 · 90 °C)",
             OnLeftRight = d => StepHeat(d), OnA = ApplyHeat,
+        };
+        _pulseAudit = new SettingItem
+        {
+            Title = "Sistem denetimi", Glyph = "",
+            Caption = "Pulse'un salt okunur denetimi: sayfa dosyası, ekran kartı belleği, ısı, arka plan yükü… Neyi neden söylediğini gösterir, hiçbir ayarı değiştirmez",
+            OnA = () => _shell.ShowInfo("Sistem denetimi", PulseLink.AuditText(_shell.LatestPulse)),
         };
         _pulseFan = new SettingItem
         {
@@ -307,6 +313,7 @@ public partial class SettingsPage : UserControl, IPage
         _items.Add(_pulseAuto);
         _items.Add(_pulseHeat);
         _items.Add(_pulseFan);
+        _items.Add(_pulseAudit);
 
         _items.Add(new SettingItem { Title = "GÜÇ", IsHeader = true });
         _items.Add(new SettingItem { Title = "Uyku", Glyph = "", Caption = "Bilgisayarı uyut", OnA = () => Native.SetSuspendState(false, false, false) });
@@ -487,7 +494,7 @@ public partial class SettingsPage : UserControl, IPage
         _pendingPulseMode = null;
     }
 
-    IEnumerable<SettingItem> PulseRows => new[] { _pulseMode, _pulseBoost, _pulseClean, _pulseAuto, _pulseHeat, _pulseFan };
+    IEnumerable<SettingItem> PulseRows => new[] { _pulseMode, _pulseBoost, _pulseClean, _pulseAuto, _pulseHeat, _pulseFan, _pulseAudit };
 
     static readonly int[] HeatSteps = { 0, 75, 80, 85, 90 };
     int? _pendingHeat;
@@ -523,6 +530,7 @@ public partial class SettingsPage : UserControl, IPage
         var pend = _pendingPulseMode is { } k && k != feed.ModeKey ? feed.Modes?.FirstOrDefault(x => x.Key == k)?.Title ?? k : null;
         _pulseMode.Value = pend == null ? (curTitle.Length > 0 ? curTitle : "—") : $"{curTitle} → {pend}";
         _pulseBoost.Value = "A"; _pulseClean.Value = "A"; _pulseFan.Value = "◀ ▶";
+        _pulseAudit.Value = feed.Audit is { } au ? (au.Count(a => a.Severity > 0) is var n and > 0 ? $"{n} bulgu" : "Sorun yok") : "A";
         _pulseAuto.Value = feed.AutoGameMode ? "Açık" : "Kapalı";
         var heatNow = HeatLabel(feed.HeatTarget);
         _pulseHeat.Value = _pendingHeat is { } ph && ph != (feed.HeatTarget ?? 0) ? $"{heatNow} → {HeatLabel(ph)}" : heatNow;
