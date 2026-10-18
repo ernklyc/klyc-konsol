@@ -541,3 +541,7 @@ Pulse sistem denetimi sonucu henüz gelmedi. Biraz sonra yeniden aç.	The Pulse 
 Dikkat edilecek bir şey bulunmadı: sayfa dosyası, ekran kartı belleği, ısı ve arka plan yükü uygun görünüyor.	Nothing needs attention: paging file, graphics memory, heat and background load look fine.
 {0} bulgu	{0} findings
 Sorun yok	No problems
+Pulse'u buradan açmak için Pulse → Ayarlar → "Windows ile başlat" bir kez açık olmalı (kolla UAC onaylanamaz)	To open Pulse from here, "Start with Windows" must be turned on once in Pulse → Settings (a controller cannot approve a UAC prompt)
+Pulse başlatılıyor…	Starting Pulse…
+Pulse başlatılamadı	Could not start Pulse
+Pulse başlatılıyor… birkaç saniye sonra tekrar dene	Starting Pulse… try again in a few seconds

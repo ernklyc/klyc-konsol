@@ -657,7 +657,14 @@ public partial class MainWindow : Window, IShell
     public void SendPulseCommand(string action, string? mode, string? value = null)
     {
         var feed = _latestPulse ?? PulseLink.ReadFeed();
-        if (!PulseLink.IsAlive(feed)) { Toast("Pulse çalışmıyor"); return; }
+        if (!PulseLink.IsAlive(feed))
+        {
+            // Pulse kapalıysa kolla açılabilsin: Pulse'un kendi başlangıç görevini çalıştır (UAC çıkmaz); komut açılınca A ile yeniden gönderilir
+            var (started, msg) = PulseLink.StartPulse();
+            AppLog.Write("pulse", $"Pulse çalışmıyor, başlatma denendi: {(started ? "tamam" : "olmadı")} — {msg}");
+            Toast(started ? "Pulse başlatılıyor… birkaç saniye sonra tekrar dene" : msg);
+            return;
+        }
         if (feed is not { AcceptsCommands: true }) { Toast("Pulse'ta komuta izin kapalı: Pulse → Ayarlar → \"Konsol'dan mod değiştirmeye izin ver\""); return; }
         var id = PulseLink.SendCommand(action, mode, value: value);
         if (id == null) { Toast("Komut Pulse'a yazılamadı"); return; }

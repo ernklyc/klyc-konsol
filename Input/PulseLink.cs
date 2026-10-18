@@ -168,6 +168,35 @@ public static class PulseLink
             ?? list.FirstOrDefault(p => dir.Length > 0 && Normalize(p.Name) is { Length: >= 4 } n && dir.Contains(n, StringComparison.Ordinal));
     }
 
+    /// <summary>Pulse'un "Windows ile başlat" ayarının oluşturduğu zamanlanmış görev (kendi adı: KLYC-Pulse).</summary>
+    public const string PulseTaskName = "KLYC-Pulse";
+
+    /// <summary>
+    /// Pulse çalışmıyorsa, Pulse'un kendi "Windows ile başlat" görevini çalıştırarak açar. Pulse yönetici ister; doğrudan açmak UAC penceresi çıkarırdı ve
+    /// kolla onaylanamaz (güvenli masaüstü). Zamanlanmış görev UAC'siz çalışır. Görev yoksa (Pulse'ta "Windows ile başlat" hiç açılmamış) nedenini söyler.
+    /// <paramref name="run"/>: schtasks argümanlarını çalıştırıp çıkış kodunu döner (testlerde sahte).
+    /// </summary>
+    public static (bool Ok, string Message) StartPulse(Func<string[], int>? run = null)
+    {
+        run ??= RunSchtasks;
+        try
+        {
+            if (run(new[] { "/Query", "/TN", PulseTaskName }) != 0)
+                return (false, "Pulse'u buradan açmak için Pulse → Ayarlar → \"Windows ile başlat\" bir kez açık olmalı (kolla UAC onaylanamaz)");
+            return run(new[] { "/Run", "/TN", PulseTaskName }) == 0 ? (true, "Pulse başlatılıyor…") : (false, "Pulse başlatılamadı");
+        }
+        catch { return (false, "Pulse başlatılamadı"); }
+    }
+
+    static int RunSchtasks(string[] args)
+    {
+        var psi = new System.Diagnostics.ProcessStartInfo("schtasks.exe") { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true };
+        foreach (var a in args) psi.ArgumentList.Add(a);
+        using var p = System.Diagnostics.Process.Start(psi)!;
+        p.StandardOutput.ReadToEnd(); p.StandardError.ReadToEnd();
+        return p.WaitForExit(8000) ? p.ExitCode : -1;
+    }
+
     /// <summary>Denetim bulgularını okunur metne çevirir (önce dikkat edilecekler). Bulgu yoksa olumlu cümle.</summary>
     public static string AuditText(PulseFeed? feed)
     {

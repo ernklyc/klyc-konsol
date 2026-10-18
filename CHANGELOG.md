@@ -7,9 +7,12 @@ Biçim [Keep a Changelog](https://keepachangelog.com/tr/) esaslıdır; sürümle
 ### Eklenenler
 - **Oyun özeti:** oyundan çıkınca (2 dakikadan uzun oturumlarda) tam ekran "Oyun özeti" paneli: bu oturumun süresi, toplam süre ve Pulse varsa **Pulse raporu** (ort. FPS, ısılar, bulgular; önem durumuna göre renkli). Rapor birkaç sn sonra hazır olur, panel kendiliğinden güncellenir. A / B ile kapanır. Eskiden yalnızca 2 sn'lik bir bildirim vardı.
 - **Güç ve çıkış menüsü:** üst çubuktaki güç düğmesi (ya da kolda sekme çubuğundayken **Y**) tek yerden: **Windows masaüstüne geç (klavye ve fare)**, **Konsol'u kapat**, Uyku, Yeniden başlat, Bilgisayarı kapat. Önceden yalnızca "Konsol kapatılsın mı?" soruluyordu.
+- **Masaüstü modunda kolla tam kontrol:** **L3** pencere değiştir (Alt+Tab), **R3** Esc, **Back+X** Görev Yöneticisi, **Back+B** pencereyi kapat (Back basılıyken A/B tıklama üretmez); X zaten Enter, Y ekran klavyesi. İpucu çubuğu iki satırda hepsini gösterir.
+- **Pulse'u kolla başlat:** Pulse kapalıyken bir Pulse satırına A basınca Pulse'un kendi "Windows ile başlat" görevi çalıştırılır (UAC çıkmaz; kolla UAC onaylanamaz). Görev yoksa nedeni söyler.
+- **Sistem denetimi satırı** (Ayarlar → PULSE): Pulse'un salt okunur bulguları (sayfa dosyası, ekran kartı belleği, ısı, arka plan yükü…) tam ekran panelde; oyun özetinde Pulse bulguları 4 satıra çıktı.
 
 ### Not
-- Pulse 1.12.1 (oyunda işlemci frenlemesi FPS öncelikli, daha ucuz sensör okuması) ile birlikte çıkar; Konsol'un kendisi oyun sırasında hâlâ kapalıdır (yalnızca ~1,5 MB'lık bekçi çalışır).
+- Pulse 1.13.0 (oyunda işlemci frenlemesi FPS öncelikli, daha ucuz sensör okuması, sistem denetimi) ile birlikte çıkar; Konsol'un kendisi oyun sırasında hâlâ kapalıdır (yalnızca ~1,5 MB'lık bekçi çalışır).
 
 ## [1.1.0] — 2026-10-18
 
@@ -24,7 +27,7 @@ Biçim [Keep a Changelog](https://keepachangelog.com/tr/) esaslıdır; sürümle
 ### Değişenler
 - Ayarlar'da satır sayısı arttı (SİSTEM: +4, PULSE: +4).
 - **Boşta işlemci kullanımı düştü:** kol yoklaması uyarlanır (kol yokken 60 ms, girdi varken 12 ms, 2 sn boşta 30 ms; eskiden hep 12 ms). Ölçüm (Konsol ekranda, boşta, 40 sn x3): tek çekirdeğin ortalama ~%2,8 → ~%1,7. Denenip bırakılanlar: ReadyToRun (açılış 2,06 → 2,01 sn, fark yok), arka plan katmanını önbelleğe almak (fark yok). Bellek ~195 MB ağırlıkla WPF çalışma zamanı.
-- 285 birim test (Konsol modu mantığı sahte kayıt defteriyle; gerçek Windows kaydına dokunulmaz).
+- 288 birim test (Konsol modu mantığı sahte kayıt defteriyle; gerçek Windows kaydına dokunulmaz).
 
 ## [1.0.1] — 2026-10-17
 

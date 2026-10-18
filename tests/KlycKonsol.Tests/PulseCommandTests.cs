@@ -246,4 +246,24 @@ public class PulseCommandValueTests
         Assert.NotEmpty(missing); Assert.NotEmpty(empty); Assert.NotEqual(missing, empty);   // dil bağımsız: iki durum farklı cümle
         Assert.Null(PulseLink.ParseFeed(Feed())!.Audit);
     }
+
+    // ---- Pulse'u kolla başlatma ----
+
+    [Fact]
+    public void StartPulse_RunsTheStartupTask_OnlyWhenItExists()
+    {
+        var calls = new List<string>();
+        var ok = PulseLink.StartPulse(a => { calls.Add(string.Join(' ', a)); return 0; });
+        Assert.True(ok.Ok);
+        Assert.Equal(new[] { "/Query /TN KLYC-Pulse", "/Run /TN KLYC-Pulse" }, calls);
+
+        calls.Clear();
+        var missing = PulseLink.StartPulse(a => { calls.Add(string.Join(' ', a)); return 1; });   // görev yok
+        Assert.False(missing.Ok);
+        Assert.Single(calls);                       // görev yokken hiçbir şey çalıştırılmaz
+        Assert.Contains("Windows ile başlat", missing.Message);
+
+        Assert.False(PulseLink.StartPulse(a => a[0] == "/Run" ? 1 : 0).Ok);   // görev var ama çalıştırılamadı
+        Assert.False(PulseLink.StartPulse(_ => throw new InvalidOperationException()).Ok);
+    }
 }
