@@ -156,6 +156,14 @@ public static class PulseLink
     }
 
     /// <summary>
+    /// Rapor şimdi biten oturuma mı ait? Pulse kaydı oyun sürecini görünce başlatır (Steam/Epic'te Konsol'un başlatmasından ~30 sn sonra),
+    /// bu yüzden başlangıç Konsol'un hesapladığı oturum başlangıcından en çok 3 dk önce/sonra ve gelecekte olmayan bir zaman olmalı.
+    /// Eski kural `StartedAt >= LastPlayed - 60` Steam oyunlarında tutmuyordu: Steam LastPlayed'i oyun BİTİNCE yazar.
+    /// </summary>
+    public static bool ReportMatchesSession(PulseReport r, long sessionStart, long now) =>
+        r.StartedAt >= sessionStart - 180 && r.StartedAt <= now + 60;
+
+    /// <summary>
     /// Pulse'ın bu oyun için tuttuğu profil (oyun ilk oynandığında Pulse oluşturur; adı çoğunlukla exe adıdır, "Hades2"). Eşleşme: ad tam eşleşir ya da
     /// kurulum klasörü yolunda profil adı geçer. Yoksa null — Konsol yeni profil yaratamaz.
     /// </summary>

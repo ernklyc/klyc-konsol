@@ -266,4 +266,16 @@ public class PulseCommandValueTests
         Assert.False(PulseLink.StartPulse(a => a[0] == "/Run" ? 1 : 0).Ok);   // görev var ama çalıştırılamadı
         Assert.False(PulseLink.StartPulse(_ => throw new InvalidOperationException()).Ok);
     }
+
+    [Fact]
+    public void ReportMatchesSession_UsesSessionStart_NotSteamLastPlayed()
+    {
+        var now = 1800000000L;
+        PulseReport R(long startedAt) => new("Hades", startedAt, 2, 100, 70, 60, "cpu", 0, new List<string>());
+        var sessionStart = now - 150;                                   // 2,5 dk önce başladı
+        Assert.True(PulseLink.ReportMatchesSession(R(sessionStart + 25), sessionStart, now));   // Pulse süreci ~25 sn sonra görüp kaydı başlattı
+        Assert.True(PulseLink.ReportMatchesSession(R(sessionStart - 10), sessionStart, now));
+        Assert.False(PulseLink.ReportMatchesSession(R(sessionStart - 600), sessionStart, now));  // önceki oturumun raporu
+        Assert.False(PulseLink.ReportMatchesSession(R(now + 600), sessionStart, now));           // gelecekteki (bozuk saat) rapor
+    }
 }

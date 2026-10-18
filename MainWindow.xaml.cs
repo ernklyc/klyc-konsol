@@ -79,7 +79,14 @@ public partial class MainWindow : Window, IShell
         if (_guardArgs.Kind == GuardStart.GameExited)
         {
             var g = _games.FirstOrDefault(x => x.Id == _guardArgs.GameId);
-            if (g != null) { RecordPlayTime(g, TimeSpan.FromSeconds(_guardArgs.PlayedSeconds)); Toast($"{g.Title} kapandı"); }
+            if (g != null)
+            {
+                var played = TimeSpan.FromSeconds(_guardArgs.PlayedSeconds);
+                RecordPlayTime(g, played);
+                // Bekçiyle başlayan oyunlarda (varsayılan yol) oyun bitince Konsol yeniden açılır; özet paneli ve Pulse raporu burada gösterilir
+                if (played >= SummaryMinPlayed) { ShowSessionSummary(g, played); _ = PulseReportAsync(g, played); }
+                else Toast($"{g.Title} kapandı");
+            }
             else SessionFinisher.RecordPlay(_state, _guardArgs.GameId, _guardArgs.PlayedSeconds);
             return;
         }
@@ -953,7 +960,7 @@ public partial class MainWindow : Window, IShell
         ShowLauncher();
         if (played >= SummaryMinPlayed) ShowSessionSummary(game, played);
         else Toast($"{game.Title} kapandı");
-        _ = PulseReportAsync(game);
+        _ = PulseReportAsync(game, played);
     }
 
     // ---- Güç menüsü: klavye/fareye geçiş, Konsol'u kapat, uyku, yeniden başlat, kapat -------------------
@@ -1043,17 +1050,18 @@ public partial class MainWindow : Window, IShell
     /// Pulse kuruluysa: oyun bitince Pulse raporunu hazırlar (birkaç sn sürer). Bu oyunun, bu oturuma ait raporu gelince tek satır bildirim gösterilir.
     /// Pulse yoksa ya da özet yoksa hiç beklenmez. Oyun BİTTİKTEN sonra çalışır; oyun sırasındaki sıfır yük ilkesi bozulmaz.
     /// </summary>
-    async Task PulseReportAsync(Game game)
+    async Task PulseReportAsync(Game game, TimeSpan played)
     {
         try
         {
+            var sessionStart = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - (long)played.TotalSeconds;   // Steam oyunlarında LastPlayed oyun BİTİNCE güncellenir; oturum başlangıcı süreden hesaplanır
             if (PulseLink.ReadFeed() is null) { ClearPendingSummary(game); return; }
             for (var i = 0; i < 12; i++)
             {
                 await Task.Delay(2000);
                 if (_mode != Mode.Launcher) return;          // kullanıcı başka yere geçti ya da yeni oyun başlattı
                 var r = PulseLink.ReportFor(PulseLink.ReadFeed(), game.Title, game.InstallDir);
-                if (r is not null && r.StartedAt >= game.LastPlayed - 60)
+                if (r is not null && PulseLink.ReportMatchesSession(r, sessionStart, DateTimeOffset.UtcNow.ToUnixTimeSeconds()))
                 {
                     AppLog.Write("rapor", $"{game.Title}: Pulse raporu geldi ({r.Minutes:0} dk, önem {r.Severity})");
                     if (_overlay == OverlayMode.Summary && _summaryGame == game)
