@@ -46,7 +46,7 @@ public partial class SettingsPage : UserControl, IPage
     readonly IShell _shell;
     readonly ObservableCollection<SettingItem> _items = new();
     int _index;
-    SettingItem _volume = null!, _autostart = null!, _startupPad = null!, _gameBar = null!, _padOnly = null!, _partial = null!, _hidden = null!, _folders = null!, _autoReturn = null!, _powerPlan = null!, _muteToasts = null!, _sounds = null!, _haptics = null!, _language = null!, _guard = null!, _sort = null!, _pulseInfo = null!, _pulseAudit = null!, _pulseMode = null!, _pulseBoost = null!, _pulseClean = null!, _pulseAuto = null!, _pulseHeat = null!, _pulseFan = null!, _shellMode = null!, _desktopWin = null!, _autoLogin = null!, _elevated = null!;
+    SettingItem _volume = null!, _autostart = null!, _startupPad = null!, _gameBar = null!, _padOnly = null!, _partial = null!, _hidden = null!, _folders = null!, _autoReturn = null!, _powerPlan = null!, _muteToasts = null!, _sounds = null!, _haptics = null!, _language = null!, _guard = null!, _sort = null!, _pulseInfo = null!, _pulseAudit = null!, _pulseBg = null!, _pulseMode = null!, _pulseBoost = null!, _pulseClean = null!, _pulseAuto = null!, _pulseHeat = null!, _pulseFan = null!, _shellMode = null!, _desktopWin = null!, _autoLogin = null!, _elevated = null!;
     readonly ControllerPanel _panel;
     readonly WifiPanel _wifi;
     readonly AboutPanel _about;
@@ -174,6 +174,12 @@ public partial class SettingsPage : UserControl, IPage
             Title = "Isı hedefi", Glyph = "",
             Caption = "◀ ▶ ile seç, A ile uygula: işlemci/ekran kartı bu sıcaklığı geçerse Pulse hızı küçük adımlarla kısar (Kapalı · 75 · 80 · 85 · 90 °C)",
             OnLeftRight = d => StepHeat(d), OnA = ApplyHeat,
+        };
+        _pulseBg = new SettingItem
+        {
+            Title = "Oyunda kapatılacak programlar", Glyph = "",
+            Caption = "◀ ▶ ile program seç, A ile aç/kapat: seçilen program oyun açılınca Pulse tarafından durdurulur, oyun bitince geri açılır (liste Pulse'un son oyun raporlarından önerilir; Windows bileşenleri ve anti-hile eklenemez)",
+            OnLeftRight = d => StepBg(d), OnA = ToggleBg,
         };
         _pulseAudit = new SettingItem
         {
@@ -313,6 +319,7 @@ public partial class SettingsPage : UserControl, IPage
         _items.Add(_pulseAuto);
         _items.Add(_pulseHeat);
         _items.Add(_pulseFan);
+        _items.Add(_pulseBg);
         _items.Add(_pulseAudit);
 
         _items.Add(new SettingItem { Title = "GÜÇ", IsHeader = true });
@@ -494,7 +501,7 @@ public partial class SettingsPage : UserControl, IPage
         _pendingPulseMode = null;
     }
 
-    IEnumerable<SettingItem> PulseRows => new[] { _pulseMode, _pulseBoost, _pulseClean, _pulseAuto, _pulseHeat, _pulseFan, _pulseAudit };
+    IEnumerable<SettingItem> PulseRows => new[] { _pulseMode, _pulseBoost, _pulseClean, _pulseAuto, _pulseHeat, _pulseFan, _pulseBg, _pulseAudit };
 
     static readonly int[] HeatSteps = { 0, 75, 80, 85, 90 };
     int? _pendingHeat;
@@ -519,6 +526,40 @@ public partial class SettingsPage : UserControl, IPage
 
     static string HeatLabel(int? t) => t is null or 0 ? "Kapalı" : $"{t} °C";
 
+    // ---- Oyunda kapatılacak programlar (Pulse listesi) ----
+    int _bgIndex;
+
+    static List<string> BgNames(PulseFeed? feed) =>
+        feed?.BgClose is { } b ? b.Selected.Concat(b.Candidates).Distinct(StringComparer.OrdinalIgnoreCase).ToList() : new List<string>();
+
+    string BgLabel(PulseFeed feed)
+    {
+        var names = BgNames(feed);
+        if (names.Count == 0) return "Aday yok (bir oyun oynayınca öneri çıkar)";
+        _bgIndex = Math.Clamp(_bgIndex, 0, names.Count - 1);
+        var n = names[_bgIndex];
+        var on = feed.BgClose!.Selected.Contains(n, StringComparer.OrdinalIgnoreCase);
+        return on ? $"{n} · kapatılacak" : $"{n} · kapatılmayacak";
+    }
+
+    void StepBg(int dir)
+    {
+        var names = BgNames(_shell.LatestPulse);
+        if (names.Count == 0) { RefreshPulse(); return; }
+        _bgIndex = (_bgIndex + dir + names.Count) % names.Count;
+        RefreshPulse();
+    }
+
+    void ToggleBg()
+    {
+        var feed = _shell.LatestPulse;
+        var names = BgNames(feed);
+        if (names.Count == 0) { _shell.Toast("Henüz öneri yok: bir oyun oynayınca Pulse arka planda en çok yoran programları listeler"); return; }
+        var n = names[Math.Clamp(_bgIndex, 0, names.Count - 1)];
+        var on = feed!.BgClose!.Selected.Contains(n, StringComparer.OrdinalIgnoreCase);
+        _shell.SendPulseCommand("bgclose", on ? "remove" : "add", n);
+    }
+
     /// <summary>Pulse satırlarının değer/açıklamasını güncel özete göre kurar.</summary>
     void RefreshPulse()
     {
@@ -530,6 +571,7 @@ public partial class SettingsPage : UserControl, IPage
         var pend = _pendingPulseMode is { } k && k != feed.ModeKey ? feed.Modes?.FirstOrDefault(x => x.Key == k)?.Title ?? k : null;
         _pulseMode.Value = pend == null ? (curTitle.Length > 0 ? curTitle : "—") : $"{curTitle} → {pend}";
         _pulseBoost.Value = "A"; _pulseClean.Value = "A"; _pulseFan.Value = "◀ ▶";
+        _pulseBg.Value = BgLabel(feed);
         _pulseAudit.Value = feed.Audit is { } au ? (au.Count(a => a.Severity > 0) is var n and > 0 ? $"{n} bulgu" : "Sorun yok") : "A";
         _pulseAuto.Value = feed.AutoGameMode ? "Açık" : "Kapalı";
         var heatNow = HeatLabel(feed.HeatTarget);

@@ -278,4 +278,14 @@ public class PulseCommandValueTests
         Assert.False(PulseLink.ReportMatchesSession(R(sessionStart - 600), sessionStart, now));  // önceki oturumun raporu
         Assert.False(PulseLink.ReportMatchesSession(R(now + 600), sessionStart, now));           // gelecekteki (bozuk saat) rapor
     }
+
+    [Fact]
+    public void Feed_ParsesBgClose_AndOldFeedHasNone()
+    {
+        var f = PulseLink.ParseFeed(Feed(",\"bgClose\":{\"selected\":[\"sunshine\"],\"candidates\":[\"chrome\",\"\"]}"))!;
+        Assert.Equal(new[] { "sunshine" }, f.BgClose!.Selected);
+        Assert.Equal(new[] { "chrome" }, f.BgClose.Candidates);
+        Assert.Null(PulseLink.ParseFeed(Feed())!.BgClose);
+        Assert.Empty(PulseLink.ParseFeed(Feed(",\"bgClose\":{}"))!.BgClose!.Selected);
+    }
 }

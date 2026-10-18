@@ -545,3 +545,9 @@ Pulse'u buradan açmak için Pulse → Ayarlar → "Windows ile başlat" bir kez
 Pulse başlatılıyor…	Starting Pulse…
 Pulse başlatılamadı	Could not start Pulse
 Pulse başlatılıyor… birkaç saniye sonra tekrar dene	Starting Pulse… try again in a few seconds
+Oyunda kapatılacak programlar	Programs to close during games
+◀ ▶ ile program seç, A ile aç/kapat: seçilen program oyun açılınca Pulse tarafından durdurulur, oyun bitince geri açılır (liste Pulse'un son oyun raporlarından önerilir; Windows bileşenleri ve anti-hile eklenemez)	◀ ▶ to pick a program, A to switch on/off: the chosen program is stopped by Pulse when a game starts and reopened when it ends (the list is suggested from Pulse's latest game reports; Windows components and anti-cheat cannot be added)
+Aday yok (bir oyun oynayınca öneri çıkar)	No candidates (suggestions appear after you play a game)
+{0} · kapatılacak	{0} · will be closed
+{0} · kapatılmayacak	{0} · will not be closed
+Henüz öneri yok: bir oyun oynayınca Pulse arka planda en çok yoran programları listeler	No suggestions yet: after a game, Pulse lists the programs that used the most background CPU

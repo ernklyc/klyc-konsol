@@ -24,8 +24,11 @@ public sealed record PulseGameProfile(string Name, string Mode, bool Enabled);
 /// <summary>Pulse sistem denetimi bulgusu. Severity: 0 bilgi, 1 dikkat.</summary>
 public sealed record PulseAuditItem(string Id, int Severity, string Title, string Detail);
 
+/// <summary>"Oyunda kapatılacak programlar": seçili olanlar ve (son raporlardan) önerilen adaylar.</summary>
+public sealed record PulseBgClose(List<string> Selected, List<string> Candidates);
+
 public sealed record PulseFeed(int Schema, long UpdatedAt, string? PulseVersion, bool Running, string? ModeKey, bool ModeApplying, bool AcceptsCommands, PulseReport? LastReport, bool AutoGameMode = false,
-    string? ModeTitle = null, List<PulseModeInfo>? Modes = null, PulseLive? Live = null, PulseCommandResult? LastCommand = null, int? HeatTarget = null, List<PulseGameProfile>? GameProfiles = null, List<PulseAuditItem>? Audit = null);
+    string? ModeTitle = null, List<PulseModeInfo>? Modes = null, PulseLive? Live = null, PulseCommandResult? LastCommand = null, int? HeatTarget = null, List<PulseGameProfile>? GameProfiles = null, List<PulseAuditItem>? Audit = null, PulseBgClose? BgClose = null);
 
 /// <summary>
 /// KLYC Pulse (kardeş proje) ile dosya tabanlı haberleşme: Pulse'ın `konsol-feed.json` özetini okur, Konsol kendi durumunu `status.json` (şema 2) olarak yazar.
@@ -91,9 +94,16 @@ public static class PulseLink
             if (r.TryGetProperty("audit", out var au) && au.ValueKind == JsonValueKind.Array)
                 audit = au.EnumerateArray().Where(x => x.ValueKind == JsonValueKind.Object && Str(x, "title") is { Length: > 0 })
                     .Select(x => new PulseAuditItem(Str(x, "id") ?? "", (int?)Dbl(x, "severity") ?? 0, Str(x, "title")!, Str(x, "detail") ?? "")).ToList();
+            PulseBgClose? bgClose = null;
+            if (r.TryGetProperty("bgClose", out var bc) && bc.ValueKind == JsonValueKind.Object)
+            {
+                List<string> Names(string key) => bc.TryGetProperty(key, out var a) && a.ValueKind == JsonValueKind.Array
+                    ? a.EnumerateArray().Where(x => x.ValueKind == JsonValueKind.String).Select(x => x.GetString()!).Where(s => s.Length > 0).ToList() : new List<string>();
+                bgClose = new PulseBgClose(Names("selected"), Names("candidates"));
+            }
             return new PulseFeed((int?)Long(r, "schema") ?? 1, Long(r, "updatedAt") ?? 0, Str(r, "pulseVersion"), Bool(r, "running"),
                 mode is { } me ? Str(me, "key") : null, mode is { } me2 && Bool(me2, "applying"), Bool(r, "acceptsCommands"), report, Bool(r, "autoGameMode"),
-                Str(r, "modeTitle"), modes, live, cmd, (int?)Dbl(r, "heatTarget"), profiles, audit);
+                Str(r, "modeTitle"), modes, live, cmd, (int?)Dbl(r, "heatTarget"), profiles, audit, bgClose);
         }
         catch (JsonException) { return null; }
     }
