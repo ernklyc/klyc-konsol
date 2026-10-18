@@ -29,9 +29,11 @@ public sealed class DesktopHint : Window
             Padding = new Thickness(22, 10, 22, 10),
             Child = new TextBlock
             {
-                Text = "Masaüstü Modu  ·  Sol çubuk: imleç  ·  Sağ çubuk: kaydır  ·  A/B: tık  ·  Y: klavye  ·  Guide veya Start+Back: Konsol'a dön",
+                Text = "Masaüstü Modu  ·  Sol çubuk: imleç  ·  Sağ çubuk: kaydır  ·  A/B: tık  ·  X: Enter  ·  Y: klavye\nL3: pencere değiştir  ·  R3: Esc  ·  Back+X: Görev Yöneticisi  ·  Back+B: pencereyi kapat  ·  Guide veya Start+Back: Konsol'a dön",
                 Foreground = Brushes.White,
                 FontSize = 15,
+                TextAlignment = TextAlignment.Center,
+                LineHeight = 24,
             },
         };
 

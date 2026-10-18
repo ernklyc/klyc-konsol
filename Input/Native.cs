@@ -37,7 +37,7 @@ static class Native
     const uint WHEEL = 0x0800, HWHEEL = 0x1000;
     const uint KEYUP = 0x0002, EXTENDED = 0x0001;
 
-    public const int VK_BACK = 0x08, VK_RETURN = 0x0D, VK_MENU = 0x12, VK_ESCAPE = 0x1B;
+    public const int VK_BACK = 0x08, VK_TAB = 0x09, VK_RETURN = 0x0D, VK_SHIFT = 0x10, VK_CONTROL = 0x11, VK_MENU = 0x12, VK_ESCAPE = 0x1B, VK_F4 = 0x73;
     public const int VK_LEFT = 0x25, VK_UP = 0x26, VK_RIGHT = 0x27, VK_DOWN = 0x28, VK_LWIN = 0x5B;
 
     static void Send(INPUT i) => SendInput(1, new[] { i }, Marshal.SizeOf<INPUT>());
@@ -82,6 +82,14 @@ static class Native
     {
         if (!GetSystemPowerStatus(out var s) || s.BatteryFlag == 128 || s.BatteryLifePercent is 0 or > 100) return null;
         return (s.BatteryLifePercent, s.ACLineStatus == 1);
+    }
+
+    /// <summary>Ctrl+Shift+Esc: Görev Yöneticisi.</summary>
+    public static void TaskManager()
+    {
+        Key(VK_CONTROL, false); Key(VK_SHIFT, false);
+        Tap(VK_ESCAPE);
+        Key(VK_SHIFT, true); Key(VK_CONTROL, true);
     }
 
     public static void Chord(int modifier, int vk)

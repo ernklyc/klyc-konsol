@@ -3,7 +3,7 @@ using System.Windows.Threading;
 
 namespace KlycKonsol.Input;
 
-public enum PadKey { Up, Down, Left, Right, A, B, X, Y, LB, RB, Start, Back, Guide }
+public enum PadKey { Up, Down, Left, Right, A, B, X, Y, LB, RB, Start, Back, Guide, LS, RS }
 
 [Flags]
 public enum Btn : ushort
@@ -211,6 +211,8 @@ public sealed class XInputPad
         Update(PadKey.Start, st.Buttons.HasFlag(Btn.Start), false, now);
         Update(PadKey.Back, st.Buttons.HasFlag(Btn.Back), false, now);
         Update(PadKey.Guide, st.Buttons.HasFlag(Btn.Guide), false, now);
+        Update(PadKey.LS, st.Buttons.HasFlag(Btn.LS), false, now);
+        Update(PadKey.RS, st.Buttons.HasFlag(Btn.RS), false, now);
 
         Tick?.Invoke(st, dt);
         Tune(true, st, now);

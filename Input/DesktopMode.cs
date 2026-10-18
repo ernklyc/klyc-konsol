@@ -62,8 +62,9 @@ public sealed class DesktopMode
         if (Math.Abs(_scrollX) >= 0.25) { var d = (int)(_scrollX * 120); Native.Wheel(d, true); _scrollX -= d / 120.0; }
 
         // Tıklamalar (basılı tutma = sürükleme)
-        var a = s.Buttons.HasFlag(Btn.A);
-        var b = BIsRightClick && s.Buttons.HasFlag(Btn.B);
+        var chord = s.Buttons.HasFlag(Btn.Back);             // Back kısayol tuşu: bu sırada A/B tıklama üretmesin
+        var a = s.Buttons.HasFlag(Btn.A) && !chord;
+        var b = BIsRightClick && s.Buttons.HasFlag(Btn.B) && !chord;
         if (_blocked)
         {
             if (!s.Buttons.HasFlag(Btn.A) && !s.Buttons.HasFlag(Btn.B)) _blocked = false;
@@ -74,12 +75,20 @@ public sealed class DesktopMode
     }
 
     /// <summary>Tek seferlik tuşlar (yön tuşları, Enter, ekran klavyesi...).</summary>
-    public void HandleKey(PadKey key)
+    public void HandleKey(PadKey key, Btn held = 0)
     {
+        // Back basılıyken: kısayollar (Back+X Görev Yöneticisi, Back+B pencereyi kapat). Back+Start zaten Konsol'a dönüş kısayolu.
+        if (held.HasFlag(Btn.Back))
+        {
+            if (key == PadKey.X) { Native.TaskManager(); return; }
+            if (key == PadKey.B) { Native.Chord(Native.VK_MENU, Native.VK_F4); return; }
+        }
         switch (key)
         {
             case PadKey.Up: Native.Tap(Native.VK_UP); break;
             case PadKey.Down: Native.Tap(Native.VK_DOWN); break;
+            case PadKey.LS: Native.Chord(Native.VK_MENU, Native.VK_TAB); break;      // pencere değiştir (Alt+Tab)
+            case PadKey.RS: Native.Tap(Native.VK_ESCAPE); break;
             case PadKey.Left: Native.Tap(Native.VK_LEFT); break;
             case PadKey.Right: Native.Tap(Native.VK_RIGHT); break;
             case PadKey.X: Native.Tap(Native.VK_RETURN); break;

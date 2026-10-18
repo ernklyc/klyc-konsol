@@ -804,7 +804,7 @@ public partial class MainWindow : Window, IShell
 
         switch (_mode)
         {
-            case Mode.Desktop: _mouse.HandleKey(key); return;
+            case Mode.Desktop: _mouse.HandleKey(key, held); return;
             case Mode.Away: return;
         }
 
