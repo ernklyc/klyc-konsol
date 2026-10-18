@@ -2,6 +2,15 @@
 
 Biçim [Keep a Changelog](https://keepachangelog.com/tr/) esaslıdır; sürümleme [SemVer](https://semver.org/lang/tr/).
 
+## [1.2.0] — 2026-10-18
+
+### Eklenenler
+- **Oyun özeti:** oyundan çıkınca (2 dakikadan uzun oturumlarda) tam ekran "Oyun özeti" paneli: bu oturumun süresi, toplam süre ve Pulse varsa **Pulse raporu** (ort. FPS, ısılar, bulgular; önem durumuna göre renkli). Rapor birkaç sn sonra hazır olur, panel kendiliğinden güncellenir. A / B ile kapanır. Eskiden yalnızca 2 sn'lik bir bildirim vardı.
+- **Güç ve çıkış menüsü:** üst çubuktaki güç düğmesi (ya da kolda sekme çubuğundayken **Y**) tek yerden: **Windows masaüstüne geç (klavye ve fare)**, **Konsol'u kapat**, Uyku, Yeniden başlat, Bilgisayarı kapat. Önceden yalnızca "Konsol kapatılsın mı?" soruluyordu.
+
+### Not
+- Pulse 1.12.1 (oyunda işlemci frenlemesi FPS öncelikli, daha ucuz sensör okuması) ile birlikte çıkar; Konsol'un kendisi oyun sırasında hâlâ kapalıdır (yalnızca ~1,5 MB'lık bekçi çalışır).
+
 ## [1.1.0] — 2026-10-18
 
 ### Eklenenler

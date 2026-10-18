@@ -34,6 +34,7 @@
                         <Border x:Name="OverlayCover" Width="250" Height="334" CornerRadius="26" Margin="0,0,0,34" HorizontalAlignment="Center"
                                 BorderBrush="White" BorderThickness="4"/>
                         <TextBlock x:Name="OverlayTitle" FontSize="60" FontWeight="Bold" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="1300"/>
+                        <TextBlock x:Name="OverlayBody" FontSize="28" Visibility="Collapsed" Foreground="{StaticResource Text}" Margin="0,22,0,0" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="1300" LineHeight="40"/>
                         <TextBlock x:Name="OverlayHint" FontSize="30" Foreground="{StaticResource TextDim}" Margin="0,16,0,0" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Grid>

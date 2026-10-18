@@ -16,7 +16,7 @@ namespace KlycKonsol;
 public partial class MainWindow : Window, IShell
 {
     enum Mode { Launcher, Away, Desktop }
-    enum OverlayMode { None, Busy, Confirm }
+    enum OverlayMode { None, Busy, Confirm, Summary }
 
     const int BrowserTab = 1;
 
@@ -234,7 +234,7 @@ public partial class MainWindow : Window, IShell
         Closing += OnWindowClosing;
         Application.Current.SessionEnding += (_, _) => _exiting = true;   // Windows kapanırken engelleme
         Nav.HideClicked += () => { if (_mode == Mode.Launcher && _overlay != OverlayMode.Busy) { HideOverlay(); HideLauncher(Mode.Away); } };
-        Nav.ExitClicked += () => Confirm("KLYC Konsol kapatılsın mı?", UserQuit);
+        Nav.ExitClicked += OpenPowerMenu;
         _pad.ConnectionChanged += OnPadConnectionChanged;
         SizeChanged += (_, _) => { };
 
@@ -730,7 +730,7 @@ public partial class MainWindow : Window, IShell
         _navFocus = true;
         _mouse.Reset();
         Nav.SetFocused(true);
-        RenderHints(new[] { ("◀ ▶", "Sekme"), ("A", "Gir"), ("▼", "Gir") });
+        RenderHints(new[] { ("◀ ▶", "Sekme"), ("A", "Gir"), ("▼", "Gir"), ("Y", "Güç menüsü / çıkış") });
     }
 
     void LeaveNav()
@@ -789,6 +789,12 @@ public partial class MainWindow : Window, IShell
 
         if (_overlay == OverlayMode.Busy) return;
         if (_mode == Mode.Launcher) Feedback(key);
+        if (_powerMenu is { IsOpen: true }) { _powerMenu.HandleKey(key); return; }
+        if (_overlay == OverlayMode.Summary)
+        {
+            if (key is PadKey.A or PadKey.B or PadKey.Start) { _summaryGame = null; HideOverlay(); }
+            return;
+        }
         if (_overlay == OverlayMode.Confirm)
         {
             if (key == PadKey.A) { var act = _confirmAction; HideOverlay(); act?.Invoke(); }
@@ -806,6 +812,7 @@ public partial class MainWindow : Window, IShell
         {
             switch (key)
             {
+                case PadKey.Y: OpenPowerMenu(); break;
                 case PadKey.Left: case PadKey.LB: SwitchTab(_tab - 1); break;
                 case PadKey.Right: case PadKey.RB: SwitchTab(_tab + 1); break;
                 case PadKey.Down: case PadKey.A: LeaveNav(); break;
@@ -937,9 +944,61 @@ public partial class MainWindow : Window, IShell
         _watcher = null;
         if (_mode != Mode.Away) return;      // kullanıcı zaten Konsol'a dönmüş ya da masaüstü modunda
         ShowLauncher();
-        Toast($"{game.Title} kapandı");
-        _ = PulseReportToastAsync(game);
+        if (played >= SummaryMinPlayed) ShowSessionSummary(game, played);
+        else Toast($"{game.Title} kapandı");
+        _ = PulseReportAsync(game);
     }
+
+    // ---- Güç menüsü: klavye/fareye geçiş, Konsol'u kapat, uyku, yeniden başlat, kapat -------------------
+
+    ListMenu? _powerMenu;
+
+    /// <summary>
+    /// Üst çubuktaki güç düğmesi (ya da sekme çubuğundayken Y): tek yerden çıkış seçenekleri. En üstteki "Windows masaüstüne geç" Konsol'u kapatmaz,
+    /// yalnızca klavye ve fareyle çalışılacak şekilde gizler (Guide / Ctrl+Alt+K ile geri gelir).
+    /// </summary>
+    void OpenPowerMenu()
+    {
+        if (_mode != Mode.Launcher || _overlay != OverlayMode.None) return;
+        if (_powerMenu is null)
+        {
+            _powerMenu = new ListMenu { Width = 980, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, Visibility = Visibility.Collapsed };
+            Grid.SetRowSpan(_powerMenu, 3);
+            ((Grid)Chrome.Child).Children.Add(_powerMenu);
+            _powerMenu.Closed += () => { _powerMenu.Visibility = Visibility.Collapsed; _mouse.Block(); if (_navFocus) FocusNav(); else RenderHints(_pageHints); };
+        }
+        _powerMenu.Visibility = Visibility.Visible;
+        _powerMenu.Open("Güç ve çıkış", () => new List<MenuRow>
+        {
+            new() { Text = "Windows masaüstüne geç (klavye ve fare)", Right = "Konsol açık kalır, Guide ile döner", OnA = () => { _powerMenu!.Close(); EnterDesktop(); } },
+            new() { Text = "Konsol'u kapat", Right = "Windows masaüstü açılır", OnA = () => { _powerMenu!.Close(); UserQuit(); } },
+            new() { Text = "Uyku", OnA = () => { _powerMenu!.Close(); Native.SetSuspendState(false, false, false); } },
+            new() { Text = "Yeniden başlat", OnA = () => { _powerMenu!.Close(); Confirm("Bilgisayar yeniden başlatılsın mı?", () => Process.Start("shutdown", "/r /t 0")); } },
+            new() { Text = "Bilgisayarı kapat", OnA = () => { _powerMenu!.Close(); Confirm("Bilgisayar kapatılsın mı?", () => Process.Start("shutdown", "/s /t 0")); } },
+        }, select: 0);
+        RenderHints(new[] { ("▲▼", "Seç"), ("A", "Onayla"), ("B", "Vazgeç") });
+    }
+
+    /// <summary>Bundan kısa oturumlar (başlatıcı açıp kapama, hemen çıkış) için özet paneli açılmaz; yalnızca kısa bildirim görünür.</summary>
+    static readonly TimeSpan SummaryMinPlayed = TimeSpan.FromSeconds(int.TryParse(Environment.GetEnvironmentVariable("KLYC_SUMMARY_MIN_SECONDS"), out var s) && s >= 0 ? s : 120);   // test için KLYC_SUMMARY_MIN_SECONDS
+    Game? _summaryGame;
+
+    /// <summary>
+    /// Oyundan çıkınca "Oyun özeti" paneli: bu oturumun süresi, toplam süre ve (Pulse varsa) Pulse raporu. Rapor birkaç sn sonra hazır olur; panel o zaman güncellenir.
+    /// A / B ile kapanır. Oyun BİTTİKTEN sonra açılır; oyun sırasındaki sıfır yük ilkesi bozulmaz.
+    /// </summary>
+    void ShowSessionSummary(Game game, TimeSpan played)
+    {
+        _summaryGame = game;
+        var pulse = PulseLink.ReadFeed() is not null;
+        ShowOverlay(OverlayMode.Summary, game.Title, "A  Tamam");
+        OverlayCover.Visibility = Visibility.Collapsed;
+        _summaryBase = $"{Loc.Translate("Bu oturum")}: {PlayTime.Format((long)played.TotalSeconds)}" + (game.PlaySeconds > 0 ? $"   ·   {Loc.Translate("Toplam")}: {PlayTime.Format(game.PlaySeconds)}" : "");
+        OverlayBody.Text = _summaryBase + (pulse ? "\n\n" + Loc.Translate("Pulse raporu hazırlanıyor…") : "");
+        OverlayBody.Foreground = (Brush)FindResource("Text");
+        OverlayBody.Visibility = Visibility.Visible;
+    }
+    string _summaryBase = "";
 
     /// <summary>
     /// Windows açılışında: kol takılıysa arayüz açık kalır; birkaç saniye içinde kol görünmezse Konsol arka plana çekilir
@@ -966,20 +1025,42 @@ public partial class MainWindow : Window, IShell
     /// Pulse kuruluysa: oyun bitince Pulse raporunu hazırlar (birkaç sn sürer). Bu oyunun, bu oturuma ait raporu gelince tek satır bildirim gösterilir.
     /// Pulse yoksa ya da özet yoksa hiç beklenmez. Oyun BİTTİKTEN sonra çalışır; oyun sırasındaki sıfır yük ilkesi bozulmaz.
     /// </summary>
-    async Task PulseReportToastAsync(Game game)
+    async Task PulseReportAsync(Game game)
     {
         try
         {
-            if (PulseLink.ReadFeed() is null) return;
-            for (var i = 0; i < 10; i++)
+            if (PulseLink.ReadFeed() is null) { ClearPendingSummary(game); return; }
+            for (var i = 0; i < 12; i++)
             {
                 await Task.Delay(2000);
                 if (_mode != Mode.Launcher) return;          // kullanıcı başka yere geçti ya da yeni oyun başlattı
                 var r = PulseLink.ReportFor(PulseLink.ReadFeed(), game.Title, game.InstallDir);
-                if (r is not null && r.StartedAt >= game.LastPlayed - 60) { AppLog.Write("rapor", $"{game.Title}: Pulse raporu geldi ({r.Minutes:0} dk, önem {r.Severity})"); Toast("Pulse raporu: " + PulseLink.ShortSummary(r)); return; }
+                if (r is not null && r.StartedAt >= game.LastPlayed - 60)
+                {
+                    AppLog.Write("rapor", $"{game.Title}: Pulse raporu geldi ({r.Minutes:0} dk, önem {r.Severity})");
+                    if (_overlay == OverlayMode.Summary && _summaryGame == game)
+                    {
+                        OverlayBody.Text = _summaryBase + "\n\n" + PulseLink.Summarize(r);
+                        OverlayBody.Foreground = r.Severity switch
+                        {
+                            >= 2 => new SolidColorBrush(Color.FromRgb(0xF0, 0x6A, 0x6A)),
+                            1 => new SolidColorBrush(Color.FromRgb(0xE8, 0xC3, 0x5A)),
+                            _ => (Brush)FindResource("Text"),
+                        };
+                    }
+                    else Toast("Pulse raporu: " + PulseLink.ShortSummary(r));
+                    return;
+                }
             }
+            ClearPendingSummary(game);
         }
         catch { }
+    }
+
+    /// <summary>Rapor gelmediyse panelde "hazırlanıyor" yazısı kalmasın.</summary>
+    void ClearPendingSummary(Game game)
+    {
+        if (_overlay == OverlayMode.Summary && _summaryGame == game) OverlayBody.Text = _summaryBase;
     }
 
     /// <summary>Steam dışı oyunların oynama süresini kaydeder (Steam oyunları için Steam'in kendi kaydı geçerlidir).</summary>
@@ -1002,6 +1083,7 @@ public partial class MainWindow : Window, IShell
     {
         _overlay = OverlayMode.None;
         Overlay.Visibility = Visibility.Collapsed;
+        OverlayBody.Visibility = Visibility.Collapsed;
         _mouse.Block();
     }
 

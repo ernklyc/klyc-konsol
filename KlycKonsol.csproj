@@ -10,7 +10,7 @@
     <RootNamespace>KlycKonsol</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\klyc.ico</ApplicationIcon>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <StartupObject>KlycKonsol.Program</StartupObject>
     <!-- Düşük kaynak: eşzamanlı (arka plan) GC iş parçacığı ve PGO enstrümantasyonu yok; yalnızca İngilizce satellite -->
     <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
