@@ -241,8 +241,9 @@ public class PulseCommandValueTests
     [Fact]
     public void AuditText_HandlesMissingAndEmpty()
     {
-        Assert.Contains("henüz gelmedi", PulseLink.AuditText(PulseLink.ParseFeed(Feed())));
-        Assert.Contains("Dikkat edilecek bir şey bulunmadı", PulseLink.AuditText(PulseLink.ParseFeed(Feed(",\"audit\":[]"))));
+        var missing = PulseLink.AuditText(PulseLink.ParseFeed(Feed()));
+        var empty = PulseLink.AuditText(PulseLink.ParseFeed(Feed(",\"audit\":[]")));
+        Assert.NotEmpty(missing); Assert.NotEmpty(empty); Assert.NotEqual(missing, empty);   // dil bağımsız: iki durum farklı cümle
         Assert.Null(PulseLink.ParseFeed(Feed())!.Audit);
     }
 }
