@@ -31,7 +31,7 @@ typedef struct { WORD buttons; BYTE lt, rt; SHORT lx, ly, rx, ry; } GAMEPAD;
 typedef struct { DWORD packet; GAMEPAD pad; } XSTATE;
 typedef DWORD (WINAPI *XGetStateEx)(DWORD, XSTATE *);
 
-static wchar_t g_konsol[MAX_PATH * 2], g_dir[MAX_PATH * 2], g_game[256], g_testFile[MAX_PATH * 2];
+static wchar_t g_konsol[MAX_PATH * 2], g_dir[MAX_PATH * 2], g_game[256], g_testFile[MAX_PATH * 2], g_testShot[MAX_PATH * 2];
 static long long g_started, g_firstSeen;
 static int g_autoReturn = 1;
 static HWND g_wnd;
@@ -43,7 +43,8 @@ static ULONGLONG g_ignoreUntil;           /* Konsol az önce açıldıysa tekrar
 
 /* ---- XInput ---------------------------------------------------------- */
 static XGetStateEx g_xget;
-static BOOL g_present[4], g_prevGuide[4], g_prevCombo[4];
+static BOOL g_present[4], g_prevGuide[4], g_prevCombo[4], g_prevShot[4];
+static BOOL g_shotRequested;            /* Back+X: ekran görüntüsü iste (ana döngü Win+PrtScn gönderir) */
 static ULONGLONG g_nextRescan;
 static volatile BOOL g_deviceChanged;   /* kol takıldı/çıkarıldı: bağlı olmayan yuvalar bir kez yeniden sorgulanır */
 
@@ -52,7 +53,7 @@ static void XInputInit(void)
     HMODULE h = LoadLibraryW(L"xinput1_4.dll");
     if (!h) h = LoadLibraryW(L"xinput1_3.dll");
     if (h) g_xget = (XGetStateEx)GetProcAddress(h, MAKEINTRESOURCEA(100));   /* XInputGetStateEx (Guide dahil) */
-    for (int i = 0; i < 4; i++) { g_prevGuide[i] = TRUE; g_prevCombo[i] = TRUE; }   /* basılı başlarsa bırakılmadan tetikleme */
+    for (int i = 0; i < 4; i++) { g_prevGuide[i] = TRUE; g_prevCombo[i] = TRUE; g_prevShot[i] = TRUE; }   /* basılı başlarsa bırakılmadan tetikleme */
 }
 
 /* Guide ya da Start+Back'e yeni basıldı mı? Bağlı olmayan yuvalar yavaş sorgulanır: 2 sn'de bir bakılır. */
@@ -68,13 +69,17 @@ static BOOL PollPads(void)
     {
         if (!g_present[i] && !rescan) continue;
         XSTATE s;
-        if (g_xget((DWORD)i, &s) != ERROR_SUCCESS) { g_present[i] = FALSE; g_prevGuide[i] = g_prevCombo[i] = FALSE; continue; }
+        if (g_xget((DWORD)i, &s) != ERROR_SUCCESS) { g_present[i] = FALSE; g_prevGuide[i] = g_prevCombo[i] = g_prevShot[i] = FALSE; continue; }
         g_present[i] = TRUE;
         BOOL guide = (s.pad.buttons & 0x0400) != 0;
         BOOL combo = (s.pad.buttons & 0x0030) == 0x0030;
         if ((guide && !g_prevGuide[i]) || (combo && !g_prevCombo[i])) hit = TRUE;
         g_prevGuide[i] = guide;
         g_prevCombo[i] = combo;
+        /* Back+X (Start yok): ekran görüntüsü. Start+Back Konsol kısayolu olduğu için Start basılıyken sayılmaz. */
+        BOOL shot = (s.pad.buttons & 0x0020) && (s.pad.buttons & 0x4000) && !(s.pad.buttons & 0x0010);
+        if (shot && !g_prevShot[i]) g_shotRequested = TRUE;
+        g_prevShot[i] = shot;
     }
     return hit;
 }
@@ -96,6 +101,20 @@ static void SpawnKonsol(const wchar_t *extra)
         CloseHandle(pi.hThread);
         CloseHandle(pi.hProcess);
     }
+}
+
+/* Ekran görüntüsü: Windows'un kendi Win+PrtScn kısayolunu gönderir (Resimler\Ekran Görüntüleri'ne kaydeder; oyunu etkilemeyen, GDI ile çekmeye göre
+ * çoğu kenarlıksız/tam ekran oyunda da çalışan yol). Geri bildirim: kısa bip. Dosya yazmaz, ağ kullanmaz. */
+static void TakeScreenshot(void)
+{
+    INPUT in[4];
+    ZeroMemory(in, sizeof in);
+    in[0].type = INPUT_KEYBOARD; in[0].ki.wVk = VK_LWIN;
+    in[1].type = INPUT_KEYBOARD; in[1].ki.wVk = VK_SNAPSHOT;
+    in[2].type = INPUT_KEYBOARD; in[2].ki.wVk = VK_SNAPSHOT; in[2].ki.dwFlags = KEYEVENTF_KEYUP;
+    in[3].type = INPUT_KEYBOARD; in[3].ki.wVk = VK_LWIN;     in[3].ki.dwFlags = KEYEVENTF_KEYUP;
+    SendInput(4, in, sizeof(INPUT));
+    MessageBeep(MB_OK);
 }
 
 static long long NowUnix(void)
@@ -294,6 +313,7 @@ static void ParseArgs(void)
         else if (!wcscmp(a, L"--firstseen")) { g_firstSeen = _wtoi64(v); i++; }
         else if (!wcscmp(a, L"--autoreturn")) { g_autoReturn = _wtoi(v) != 0; i++; }
         else if (!wcscmp(a, L"--test-guide")) { StringCchCopyW(g_testFile, MAX_PATH * 2, v); i++; }
+        else if (!wcscmp(a, L"--test-shot")) { StringCchCopyW(g_testShot, MAX_PATH * 2, v); i++; }
     }
     LocalFree(argv);
 }
@@ -365,6 +385,8 @@ int WINAPI wWinMain(HINSTANCE inst, HINSTANCE prev, PWSTR cmdline, int show)
         BOOL trigger = PollPads();
         if (g_testFile[0] && GetFileAttributesW(g_testFile) != INVALID_FILE_ATTRIBUTES) { DeleteFileW(g_testFile); trigger = TRUE; }
         if (trigger) Resume();
+        if (g_testShot[0] && GetFileAttributesW(g_testShot) != INVALID_FILE_ATTRIBUTES) { DeleteFileW(g_testShot); g_shotRequested = TRUE; }
+        if (g_shotRequested) { g_shotRequested = FALSE; TakeScreenshot(); }
         if (!g_hotkeyOk && GetTickCount64() >= nextHotkeyTry)
         {
             nextHotkeyTry = GetTickCount64() + 1000;

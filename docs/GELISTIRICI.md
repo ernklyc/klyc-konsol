@@ -28,7 +28,7 @@ Viewbox dışındaki katmanda yer tutucuya hizalanması, uzun listelerin `Canvas
 `--from-guard [--game-exited --game .. --played N [--silent]]` ile açar. Konsol açılırken `KlycKonsol.Guard.Stop` olayıyla bekçiyi durdurur;
 oturum bilgisi `guard.json`'da tutulur (bekçi çalışırken Konsol başka yoldan açılırsa devralınır).
 
-Yeniden derleme (MSVC gerekir): `powershell -File Guard/build.ps1`; depodaki `KlycGuard.exe` SHA-256: `9cef4774e4db5e1bd4fdcbfea3cbd845f778fbf65e84e2536fc394727bb45f41`. `--test-guide <dosya>`: dosya oluşunca Guide basılmış sayılır (yalnızca test).
+Yeniden derleme (MSVC gerekir): `powershell -File Guard/build.ps1`; depodaki `KlycGuard.exe` SHA-256: `bd3a56bbe192ff1aeaee11c3ce847ffee3db52b0ae9b14835dc1d093adf4530d`. `--test-guide <dosya>`: dosya oluşunca Guide basılmış sayılır, `--test-shot <dosya>`: dosya oluşunca ekran görüntüsü alınır (yalnızca test).
 
 ## Komut satırı bayrakları (yalnızca geliştirme)
 

@@ -10,6 +10,8 @@ Biçim [Keep a Changelog](https://keepachangelog.com/tr/) esaslıdır; sürümle
 - **Masaüstü modunda kolla tam kontrol:** **L3** pencere değiştir (Alt+Tab), **R3** Esc, **Back+X** Görev Yöneticisi, **Back+B** pencereyi kapat (Back basılıyken A/B tıklama üretmez); X zaten Enter, Y ekran klavyesi. İpucu çubuğu iki satırda hepsini gösterir.
 - **Pulse'u kolla başlat:** Pulse kapalıyken bir Pulse satırına A basınca Pulse'un kendi "Windows ile başlat" görevi çalıştırılır (UAC çıkmaz; kolla UAC onaylanamaz). Görev yoksa nedeni söyler.
 - **Sistem denetimi satırı** (Ayarlar → PULSE): Pulse'un salt okunur bulguları (sayfa dosyası, ekran kartı belleği, ısı, arka plan yükü…) tam ekran panelde; oyun özetinde Pulse bulguları 4 satıra çıktı.
+- **Oyun sırasında ekran görüntüsü:** kolda **Back + X** (Start basılı değilken; Start+Back Konsol'a dönüş kısayolu): bekçi Windows'un kendi Win+PrtScn kısayolunu gönderir, görüntü Resimler\Ekran Görüntüleri'ne kaydedilir, kısa bip duyulur. Kaynak: `Guard/KlycGuard.c`; bekçi test bayrağı `--test-shot` ile gerçek Windows'ta doğrulandı (PNG oluştu); gerçek kolla Back+X denenmedi.
+- **Düzeltme (gerçek oyun denemesinden):** bekçiyle başlayan oyunlardan dönüşte oyun özeti paneli açılmıyordu (yalnızca bildirim vardı); Pulse raporu Steam oyunlarında hiç eşleşmiyordu (Steam "son oynama"yı oyun bitince yazar) → rapor artık oturum başlangıcına göre eşleşir.
 
 ### Not
 - Pulse 1.13.0 (oyunda işlemci frenlemesi FPS öncelikli, daha ucuz sensör okuması, sistem denetimi) ile birlikte çıkar; Konsol'un kendisi oyun sırasında hâlâ kapalıdır (yalnızca ~1,5 MB'lık bekçi çalışır).
